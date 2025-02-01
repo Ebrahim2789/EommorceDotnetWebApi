@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommorce.API", "Ecommorce.API\Ecommorce.API.csproj", "{679D3F3A-31D1-4176-8B8E-ECE85CC93D31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommorce.Model", "Ecommorce.Model\Ecommorce.Model.csproj", "{8C58188F-0711-42AE-8E06-2895D7ADC163}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommorce.Application", "Ecommorce.Application\Ecommorce.Application.csproj", "{3843A1B0-8440-4359-B62A-8794C751B0C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommorce.Infrastructure", "Ecommorce.Infrastructure\Ecommorce.Infrastructure.csproj", "{506C822A-837E-40EE-BF94-3E19766C9DB6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{679D3F3A-31D1-4176-8B8E-ECE85CC93D31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{679D3F3A-31D1-4176-8B8E-ECE85CC93D31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{679D3F3A-31D1-4176-8B8E-ECE85CC93D31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{679D3F3A-31D1-4176-8B8E-ECE85CC93D31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C58188F-0711-42AE-8E06-2895D7ADC163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C58188F-0711-42AE-8E06-2895D7ADC163}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C58188F-0711-42AE-8E06-2895D7ADC163}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C58188F-0711-42AE-8E06-2895D7ADC163}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3843A1B0-8440-4359-B62A-8794C751B0C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3843A1B0-8440-4359-B62A-8794C751B0C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3843A1B0-8440-4359-B62A-8794C751B0C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3843A1B0-8440-4359-B62A-8794C751B0C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{506C822A-837E-40EE-BF94-3E19766C9DB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{506C822A-837E-40EE-BF94-3E19766C9DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{506C822A-837E-40EE-BF94-3E19766C9DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{506C822A-837E-40EE-BF94-3E19766C9DB6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
