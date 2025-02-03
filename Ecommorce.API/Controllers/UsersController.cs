@@ -46,25 +46,13 @@ namespace Ecommorce.API.Controllers
         [Authorize(Roles ="Admin")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            //_repository.GetAllAsync();
-                
-
             var user = await _context.Roles.FindAsync(2);
-            var userrole = await _context.Users
-                          .Include(u => u.UserRoles)
-                          .ThenInclude(ur => ur.RoleUserName)
-                          .FirstOrDefaultAsync(u => u.Id == user.Id);
+            var userrole = _repository.FindByCondition(u => u.Id == user.Id).Include(u=>u.UserRoles).ThenInclude(u=>u.RoleUserName);
 
+            var userfollower = _repository.FindByCondition(u => u.Id == user.Id).Include(u => u.Followers).ThenInclude(u => u.Follower).ToList();
 
-            var userfollower = await _context.Users
-                               .Include(users => users.Followers)
-                               .ThenInclude(users => users.Follower)
-                               .FirstOrDefaultAsync(u => u.Id == user.Id);
-
-            var userfollowing = await _context.Users
-                               .Include(users => users.Following)
-                               .ThenInclude(users => users.Following)
-                               .FirstOrDefaultAsync(u => u.Id == user.Id);
+            var userfollowing  = _repository.FindByCondition(u => u.Id == user.Id).Include(users => users.Following)
+                               .ThenInclude(users => users.Following);
 
             return Ok(userfollower);
 

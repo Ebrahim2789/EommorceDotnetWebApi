@@ -9,7 +9,13 @@ namespace Ecommorce.Model.IdentityModel
 {
     public class RoleIdentity: IdentityRole
     {
+      
+        public RoleIdentity() { }
         public string Role {  get; set; }
+        public RoleIdentity(string roleName)
+        {
+            Role = roleName;
+        }
 
     }
 }

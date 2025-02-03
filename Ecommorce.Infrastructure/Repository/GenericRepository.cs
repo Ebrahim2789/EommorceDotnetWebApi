@@ -1,6 +1,7 @@
 ﻿using Ecommorce.Application.Repository;
 using Ecommorce.Model;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq.Expressions;
 
 
@@ -63,5 +64,9 @@ namespace Ecommorce.Infrastructure.Repository
             _context.SaveChanges();
         }
 
+        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> predicate)
+        {
+            return  _dbSet.Where(predicate);
+        }
     }
 }

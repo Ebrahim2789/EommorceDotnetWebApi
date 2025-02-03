@@ -29,8 +29,5 @@
     <ProjectReference Include="..\Ecommorce.Infrastructure\Ecommorce.Infrastructure.csproj" />
     <ProjectReference Include="..\Ecommorce.Model\Ecommorce.Model.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
 
 </Project>

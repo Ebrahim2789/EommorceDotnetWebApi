@@ -3,6 +3,7 @@ using Ecommorce.Infrastructure.Repository;
 using Ecommorce.Model;
 using Ecommorce.Model.UserModel;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Ecommorce.Infrastructure.Repositories
 {
@@ -10,6 +11,7 @@ namespace Ecommorce.Infrastructure.Repositories
     {
         public UserRepository(ApplicationDbContext context) : base(context) { }
 
+     
         public async Task<User> GetUserByEmailAsync(string email)
         {
             return await _dbSet.FirstOrDefaultAsync(u => u.Email == email);

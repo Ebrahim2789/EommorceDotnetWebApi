@@ -6,46 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ecommorce.API.Migrations
 {
     /// <inheritdoc />
-    public partial class IdentityAndDto : Migration
+    public partial class IdentiyUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DateAdded",
-                table: "Drivers",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DateUpdated",
-                table: "Drivers",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<int>(
-                name: "DriverNumber",
-                table: "Drivers",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "Status",
-                table: "Drivers",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "WorldChampionships",
-                table: "Drivers",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -66,7 +31,6 @@ namespace Ecommorce.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -194,12 +158,6 @@ namespace Ecommorce.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Unique_Email",
-                table: "Users",
-                column: "Email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -262,30 +220,6 @@ namespace Ecommorce.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Unique_Email",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "DateAdded",
-                table: "Drivers");
-
-            migrationBuilder.DropColumn(
-                name: "DateUpdated",
-                table: "Drivers");
-
-            migrationBuilder.DropColumn(
-                name: "DriverNumber",
-                table: "Drivers");
-
-            migrationBuilder.DropColumn(
-                name: "Status",
-                table: "Drivers");
-
-            migrationBuilder.DropColumn(
-                name: "WorldChampionships",
-                table: "Drivers");
         }
     }
 }

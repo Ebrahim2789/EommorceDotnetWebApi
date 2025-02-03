@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Ecommorce.Model.UserModel;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Ecommorce.Model.IdentityModel;
+using Microsoft.AspNetCore.Identity;
 
 namespace Ecommorce.Model
 {
-    public class ApplicationDbContext : IdentityDbContext<UsersIdentity,RoleIdentity,string>
+    public class ApplicationDbContext :IdentityDbContext<UsersIdentity,RoleIdentity, string>
     {
 
         public DbSet<Car> Cars { get; set; }
@@ -20,6 +21,12 @@ namespace Ecommorce.Model
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
 
+        public DbSet<IdentityUserClaim<string>> UserClaims { get; set; }
+        public DbSet<IdentityRoleClaim<string>> RoleClaims { get; set; }
+
+        public DbSet<UsersIdentity> usersIdentities { get; set; }
+        public DbSet<RoleIdentity>  roleIdentities { get; set; }
+        
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
 
@@ -46,9 +53,6 @@ namespace Ecommorce.Model
               .WithMany(u => u.Followers)
               .HasForeignKey(u => u.FollowingId)
               .OnDelete(DeleteBehavior.ClientSetNull);
-
-
-
 
 
             modelBuilder.Entity<Role>()

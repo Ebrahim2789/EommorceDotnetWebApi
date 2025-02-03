@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommorce.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250131182129_IdentityAndDto")]
-    partial class IdentityAndDto
+    [Migration("20250202180948_AddIdentityModel")]
+    partial class AddIdentityModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,11 +79,6 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");

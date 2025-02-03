@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommorce.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250125175427_userfollowing")]
-    partial class userfollowing
+    [Migration("20250202180320_IdentiyUserClaims")]
+    partial class IdentiyUserClaims
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -107,6 +107,15 @@ namespace Ecommorce.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DriverNumber")
+                        .HasColumnType("int");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -117,11 +126,17 @@ namespace Ecommorce.API.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("TimeStamp")
                         .IsConcurrencyToken()
                         .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
+
+                    b.Property<int>("WorldChampionships")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -253,6 +268,9 @@ namespace Ecommorce.API.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex(new[] { "Email" }, "IX_Unique_Email")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });

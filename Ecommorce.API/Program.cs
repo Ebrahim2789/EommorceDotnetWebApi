@@ -19,8 +19,7 @@ using Ecommorce.Infrastructure.Logger;
 using Ecommorce.Model.Profiles;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-
+using Ecommorce.Infrastructure.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,11 +77,14 @@ builder.Services.AddScoped<IDriverRepository, DriverRepository>();
 builder.Services.AddScoped<AuthService>();
 
 
-builder.Services.AddIdentity<UsersIdentity, RoleIdentity>()
+builder.Services.AddIdentity<UsersIdentity ,  RoleIdentity>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -93,10 +95,15 @@ if (!app.Environment.IsDevelopment())
 
 
 }
+
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseRouting();
+
+
+app.ConfigureExceptionHandler();
+
 
 app.UseAuthorization();
 
@@ -111,5 +118,38 @@ app.MapControllerRoute(
     .WithStaticAssets();
 
 
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var service = scope.ServiceProvider;
+//    await CreateRole(service);
+//}
+
 app.Run();
 
+
+
+async Task CreateRole(IServiceProvider serviceProvider)
+{
+    var roleManger = serviceProvider.GetRequiredService<RoleManager<RoleIdentity>>();
+    var userManger = serviceProvider.GetRequiredService<UserManager<UsersIdentity>>();
+
+    string roleName = "Admin";
+    string userEmail = "admin@example.com";
+    string userPassword = "Admin@123";
+
+    if (!await roleManger.RoleExistsAsync(roleName))
+    {
+
+        await roleManger.CreateAsync(new RoleIdentity(roleName));
+    }
+    var user = await userManger.FindByEmailAsync(userEmail);
+    if (user == null)
+    {
+        user = new UsersIdentity { UserName = userEmail, Email = userEmail };
+        await userManger.CreateAsync(user, userPassword);
+        await userManger.AddToRoleAsync(user, roleName);
+    }
+
+
+}
