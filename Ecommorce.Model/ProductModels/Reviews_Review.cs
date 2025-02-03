@@ -1,6 +1,6 @@
 ﻿namespace Ecommorce.Model.ProductModels
 {
-    public class Reviews_Review
+    public class Reviews_Review : Common
     {
         public int Id { get; set; }
         public int UserId { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace Ecommorce.Model.ProductModels
 {
-    public class Product_Category
+    public class Product_Category : Common
     {
         public int Id { get; set; }
         public string Name { get; set; }

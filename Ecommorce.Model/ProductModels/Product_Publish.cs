@@ -1,6 +1,6 @@
 ﻿namespace Ecommorce.Model.ProductModels
 {
-    public class Product_Publish
+    public class Product_Publish : Common
     {
 
 

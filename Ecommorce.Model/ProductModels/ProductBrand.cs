@@ -1,6 +1,6 @@
 ﻿namespace Ecommorce.Model.ProductModels
 {
-    public class ProductBrand
+    public class ProductBrand : Common
     {
 
         public int Id { get; set; }

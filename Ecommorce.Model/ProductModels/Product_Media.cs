@@ -1,6 +1,6 @@
 ﻿namespace Ecommorce.Model.ProductModels
 {
-    public class Product_Media
+    public class Product_Media : Common
     {
 
         public int Id { get; set; }

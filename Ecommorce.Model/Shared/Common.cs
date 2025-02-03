@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ecommorce.Model.NewFolder.Shared
+namespace Ecommorce.Model.Shared
 {
     public class Common
     {

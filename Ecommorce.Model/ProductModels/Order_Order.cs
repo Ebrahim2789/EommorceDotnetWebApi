@@ -1,6 +1,6 @@
 ﻿namespace Ecommorce.Model.ProductModels
 {
-    public class Order_Order
+    public class Order_Order : Common
     {
         public int Id { get; set; }
         public int OrderNo { get; set; }
