@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommorce.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250202180948_AddIdentityModel")]
-    partial class AddIdentityModel
+    [Migration("20250206180545_config")]
+    partial class config
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -323,7 +323,7 @@ namespace Ecommorce.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
 
                     b.HasData(
                         new

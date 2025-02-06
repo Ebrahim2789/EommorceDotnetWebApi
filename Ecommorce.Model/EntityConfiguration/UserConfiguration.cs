@@ -14,7 +14,7 @@ namespace Ecommorce.Model.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            throw new NotImplementedException();
+            builder.HasKey(x => x.Id);
         }
     }
 
@@ -46,6 +46,8 @@ namespace Ecommorce.Model.EntityConfiguration
         public void Configure(EntityTypeBuilder<Role> modelBuilder)
         {
 
+            modelBuilder.ToTable("Roles");
+            modelBuilder.HasKey(uf => uf.Id);
             modelBuilder
                 .HasData(
 
