@@ -23,7 +23,7 @@ using Ecommorce.Infrastructure.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 
-LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/Nlogs.config"));
+LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/Nlogs.config"));
 
 builder.Services.AddDbContext<ApplicationDbContext>(opts => 
     opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaulConnection"),b =>

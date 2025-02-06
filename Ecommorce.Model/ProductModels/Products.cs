@@ -53,14 +53,12 @@ namespace Ecommorce.Model.ProductModels
         public ICollection<ProductMedia> Medias { get; set; }
 
 
-        public ICollection<ProductOption> Options { get; set; }
 
-        public ICollection<ProductOptionData> OptionsData { get; set; }
-
-
+        public virtual ICollection<ProductOption> ProductOptions { get; set; }
+        public virtual ICollection<ProductOptionValue> ProductOptionValues { get; set; }
         public ICollection<ProductAttribute> Attributes{ get; set; }
 
-        public ICollection<ProductAttributeData> AttributesData { get; set; }
+        public ICollection<ProductAttributeValue> AttributesValues { get; set; }
 
     }
 

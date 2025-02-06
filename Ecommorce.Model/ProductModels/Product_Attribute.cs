@@ -10,7 +10,7 @@ namespace Ecommorce.Model.ProductModels
         public string Name { get; set; }
         public string Description { get; set; }
 
-
+        public virtual ICollection<ProductAttributeData> Attributes { get; set; }   
 
 
 

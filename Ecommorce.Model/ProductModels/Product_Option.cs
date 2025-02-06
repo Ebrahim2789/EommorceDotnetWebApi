@@ -11,6 +11,8 @@ namespace Ecommorce.Model.ProductModels
         public string Description { get; set; }
         public int DisplayType { get; set; }
 
+        public virtual ICollection<ProductOptionData> ProductOptionDatas { get; set; }
+
     }
 
 }
