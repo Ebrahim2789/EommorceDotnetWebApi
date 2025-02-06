@@ -3,18 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ecommorce.Model.ProductModels
 {
-    public class ProductAttributeValue
+    public class ProductOption :Common
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public int AttributeId { get; set; }
-        public ProductAttribute Attribute { get; set; }
-        public string Value { get; set; }
+        public int Name { get; set; }
         public string Description { get; set; }
-        public bool IsPublished { get; set; }
-
-
-
+        public int DisplayType { get; set; }
 
     }
 

@@ -4,6 +4,7 @@ using Ecommorce.Model.UserModel;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Ecommorce.Model.IdentityModel;
 using Microsoft.AspNetCore.Identity;
+using Ecommorce.Model.EntityConfiguration;
 
 namespace Ecommorce.Model
 {
@@ -34,37 +35,23 @@ namespace Ecommorce.Model
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
             configurationBuilder.Properties<string>().HaveMaxLength(50);
+            
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<UserFollower>()
-                .HasKey(uf => new { uf.FollowerId,uf.FollowingId});
+            modelBuilder.ApplyConfiguration(new ProductConfigration());
 
-            modelBuilder.Entity<UserFollower>()
-                .HasOne(uf => uf.Follower)
-                .WithMany(u => u.Following)
-                .HasForeignKey(u => u.FollowerId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            modelBuilder.ApplyConfiguration(new ProductMediaConfigrution());
 
-            modelBuilder.Entity<UserFollower>()
-              .HasOne(uf => uf.Following)
-              .WithMany(u => u.Followers)
-              .HasForeignKey(u => u.FollowingId)
-              .OnDelete(DeleteBehavior.ClientSetNull);
+            modelBuilder.ApplyConfiguration(new UserFollowConfigration());
+            modelBuilder.ApplyConfiguration(new  RoleConfigration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
 
 
-            modelBuilder.Entity<Role>()
-                .HasData(
-
-                new Role { Id = 1, Name = "Admin" },
-                new Role { Id = 2, Name = "User" },
-                new Role { Id = 3, Name = "Customer" },
-                new Role { Id = 4, Name = "Marchent" }
 
 
-                );
 
 
 

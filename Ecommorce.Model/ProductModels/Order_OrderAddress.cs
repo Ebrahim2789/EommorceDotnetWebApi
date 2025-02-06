@@ -1,7 +1,11 @@
-﻿namespace Ecommorce.Model.ProductModels
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace Ecommorce.Model.ProductModels
 {
     public class Order_OrderAddress : Common
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int OrderId { get; set; }
         public string ContactName { get; set; }

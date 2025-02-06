@@ -1,19 +1,23 @@
-﻿namespace Ecommorce.Model.ProductModels
+﻿using Ecommorce.Model.UserModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Ecommorce.Model.ProductModels
 {
-    public class Product_Publish : Common
+    public class ProductPublish : Common
     {
-
-
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public int ProductId { get; set; }
-        public int UserId { get; set; }
-        public string PublishTimeFrom { get; set; }
-        public string PublishTimeTo { get; set; }
-        public string DisplayOrder { get; set; }
+        public DateTime PublishTimeFrom { get; set; }
+        public DateTime PublishTimeTo { get; set; }
+        public int DisplayOrder { get; set; }
         public bool IsDisplay { get; set; }
 
+        public int UserId { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public User Publisher { get; set; }
 
-
+        public ICollection<Product> Products { get; set; }
     }
 
 }

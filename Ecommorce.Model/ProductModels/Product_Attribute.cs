@@ -1,10 +1,16 @@
-﻿namespace Ecommorce.Model.ProductModels
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace Ecommorce.Model.ProductModels
 {
-    public class Product_Attribute
+    public class ProductAttribute
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+
+
 
 
 
