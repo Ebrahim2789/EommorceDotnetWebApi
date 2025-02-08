@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Ecommorce.Model.Shared;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,13 +11,19 @@ using System.Threading.Tasks;
 namespace Ecommorce.Model.UserModel
 {
     [Index(nameof(Email), Name = "IX_Unique_Email", IsUnique = true)]
-    public class User
+    public class User : Common
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string UserName { get; set; }
+        public string UserOpenId { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? AvatarUrl { get; set; }
+        public DateTime LastLoginOn { get; set; } = DateTime.Now;
+        public bool IsActive { get; set; } = false;
+        public bool IsDelete { get; set; } = false;
         //[InverseProperty(nameof(UserFollower.FollowerId))]
         public ICollection<UserFollower>? Followers { get; set; } = new List<UserFollower>();
 

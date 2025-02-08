@@ -1,11 +1,13 @@
 ﻿using Azure.Core;
 using Ecommorce.Application.IRepository;
+using Ecommorce.Application.Repository;
 using Ecommorce.Infrastructure.Services;
 using Ecommorce.Model;
 using Ecommorce.Model.UserModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using NuGet.Common;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -17,16 +19,18 @@ namespace Ecommorce.API.Controllers
     public class AuthController :ControllerBase
     {
         private readonly AuthService _authService;
+
         private static readonly Dictionary<string, string> _refreshToken;
-        private readonly ApplicationDbContext _context;
+
+
         private readonly IConfiguration _configuration;
 
-        private readonly IUserRepository _repository;
-        public AuthController(AuthService authService, ApplicationDbContext context,IUserRepository userRepository,IConfiguration configuration) 
+        private readonly IRepositoryManager _repository;
+        public AuthController(AuthService authService,  IRepositoryManager repositoryManager ,IConfiguration configuration) 
         {
             _authService=authService;
-            _context=context;
-            _repository=userRepository;
+          
+            _repository= repositoryManager;
             _configuration = configuration;
         }
         
@@ -34,8 +38,7 @@ namespace Ecommorce.API.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<IEnumerable<User>>> Login([FromBody] AddUserModel model)
         {
-            var users = await _context.Users.
-              Include(users => users.UserRoles)
+            var users = await _repository.User.FindByCondition(users=> users.Email==model.Email).Include(users => users.UserRoles)
                   .ThenInclude(ur => ur.RoleUserName)
                .FirstOrDefaultAsync(u => u.Email == model.Email);
 
@@ -65,6 +68,8 @@ namespace Ecommorce.API.Controllers
 
             //_refreshToken[refreshToken] ="";
 
+            //SaveRefreshToken(string username, string token)
+
             return Ok(new {  accessToken, refreshToken });
 
         }
@@ -89,16 +94,27 @@ namespace Ecommorce.API.Controllers
             var newaccessToken = _authService.BuildToken(claiems);
             var newRefreshToken = _authService.GenretRefreshToken();
 
+            //RevokeRefreshToken(string refreshToken)
+
 
             _refreshToken.Remove( request.RefreshToken);
             _refreshToken[newRefreshToken] = userName;
+
+            //RetrieveUsernameByRefreshToken(string refreshToken)
+
+
 
             return Ok(new { newaccessToken, newRefreshToken });
 
         }
     }
 
-    public class RefreshRequst
+
+  
+
+
+
+public class RefreshRequst
     {
         public string RefreshToken { get; set; }
         public string Email { get; set; }

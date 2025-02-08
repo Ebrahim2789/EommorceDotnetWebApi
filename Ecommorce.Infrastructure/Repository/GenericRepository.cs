@@ -21,7 +21,9 @@ namespace Ecommorce.Infrastructure.Repository
 
         public async Task<T> GetByIdAsync(int id)
         {
+
             return await _dbSet.FindAsync(id);
+
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -66,7 +68,7 @@ namespace Ecommorce.Infrastructure.Repository
 
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> predicate)
         {
-            return  _dbSet.Where(predicate);
+            return _dbSet.Where(predicate);
         }
     }
 }

@@ -27,32 +27,25 @@ namespace Ecommorce.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-
-        private readonly IConfiguration _configuration;
-
-        private readonly IUserRepository _repository;
-
-        public UsersController(ApplicationDbContext context, IConfiguration configuration, IUserRepository userRepository)
+        private readonly IRepositoryManager _repository;
+        public UsersController(IRepositoryManager repository)
         {
-            _context = context;
-            _configuration = configuration;
-            _repository = userRepository;
-
+            _repository = repository;
         }
 
         // GET: api/Users
         [HttpGet]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            var user = await _context.Roles.FindAsync(2);
-            var userrole = _repository.FindByCondition(u => u.Id == user.Id).Include(u=>u.UserRoles).ThenInclude(u=>u.RoleUserName);
+            var user = await _repository.Role.GetByIdAsync(2);
 
-            var userfollower = _repository.FindByCondition(u => u.Id == user.Id).Include(u => u.Followers).ThenInclude(u => u.Follower).ToList();
+            var userrole = _repository.User.FindByCondition(u => u.Id == user.Id).Include(u => u.UserRoles).ThenInclude(u => u.RoleUserName);
 
-            var userfollowing  = _repository.FindByCondition(u => u.Id == user.Id).Include(users => users.Following)
-                               .ThenInclude(users => users.Following);
+            var userfollower = await _repository.User.FindByCondition(u => u.Id == user.Id).Include(u => u.Followers).ThenInclude(u => u.Follower).ToListAsync();
+
+            // var userfollowing = _repository.User.FindByCondition(u => u.Id == user.Id).Include(users => users.Following)
+            //                    .ThenInclude(users => users.Following);
 
             return Ok(userfollower);
 
@@ -62,7 +55,9 @@ namespace Ecommorce.API.Controllers
         [Authorize]
         public async Task<ActionResult<User>> AddUser([FromBody] AddUserModel user)
         {
-            if (await _context.Users.AnyAsync(u => u.UserName == user.UserName || u.Email == user.Email))
+           var result=  await _repository.User.FindByCondition(u => u.UserName == user.UserName || u.Email == user.Email).ToListAsync();
+           
+            if (result!=null)
             {
                 return BadRequest("UserEmail and username ares alrready exist");
             }
@@ -72,8 +67,8 @@ namespace Ecommorce.API.Controllers
                 Email = user.Email,
                 Password = user.Password,
             };
-            _context.Users.Add(users);
-            await _context.SaveChangesAsync();
+            await _repository.User.AddAsync(users);
+
             return Ok(new { message = "users added successfully", usersId = users.Id });
         }
 
@@ -82,7 +77,7 @@ namespace Ecommorce.API.Controllers
         [Authorize]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = await _repository.GetByIdAsync(id);
+            var user = await _repository.User.GetByIdAsync(id);
 
             if (user == null)
             {
@@ -104,26 +99,12 @@ namespace Ecommorce.API.Controllers
             {
                 return BadRequest();
             }
+            var isSuccess = await _repository.User.GetByIdAsync(id);
+            if (isSuccess == null) return BadRequest("User not found");
 
-            _context.Entry(user).State = EntityState.Modified;
+            _repository.User.Update(user);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok("");
         }
 
         // POST: api/Users
@@ -132,8 +113,8 @@ namespace Ecommorce.API.Controllers
         [Authorize]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-            _repository.AddAsync(user);
-           
+            await _repository.User.AddAsync(user);
+
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
@@ -143,21 +124,18 @@ namespace Ecommorce.API.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            var user = await _repository.GetByIdAsync(id);
+            var user = await _repository.User.GetByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            _repository.Delete(user);
+            _repository.User.Delete(user);
 
             return NoContent();
         }
 
-        private bool UserExists(int id)
-        {
-            return _context.Users.Any(e => e.Id == id);
-        }
+
 
 
 

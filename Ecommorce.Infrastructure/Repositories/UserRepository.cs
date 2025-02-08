@@ -1,4 +1,5 @@
 ﻿using Ecommorce.Application.IRepository;
+using Ecommorce.Infrastructure.Extension;
 using Ecommorce.Infrastructure.Repository;
 using Ecommorce.Model;
 using Ecommorce.Model.UserModel;
@@ -14,7 +15,9 @@ namespace Ecommorce.Infrastructure.Repositories
      
         public async Task<User> GetUserByEmailAsync(string email)
         {
+
             return await _dbSet.FirstOrDefaultAsync(u => u.Email == email);
+
         }
 
         public async Task<User?> ValidateUser(string UserName, string password)
@@ -23,6 +26,26 @@ namespace Ecommorce.Infrastructure.Repositories
             return await _dbSet.FirstOrDefaultAsync(u => u.UserName == UserName && u.Password == password); 
 
                                    
+        }
+
+        
+        public async Task<IEnumerable<User>> GetUsersAsync()
+        {
+            return await GetAllAsync();
+        }
+
+        public async Task AddAsyncs(User user) => await AddAsync(user);
+
+        public async Task<string> GenerateUniqueOpenIdAysnc()
+        {
+            string openid;
+            do
+            {
+                openid = new OpenIdGenerator().GenerateOpenId(20);
+
+            }
+            while (await _context.Users.AnyAsync(u => u.UserOpenId == openid));
+            return openid;
         }
     }
 
