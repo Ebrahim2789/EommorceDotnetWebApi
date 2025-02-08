@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ecommorce.Model.NewFolder;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,5 +18,7 @@ namespace Ecommorce.Model.UserModel
 
         [InverseProperty(nameof(UserRole.RoleUserName))]
         public IEnumerable<UserRole>? UsersRoles { get; set; }= new List<UserRole>();
+
+        public virtual ICollection<CoreRoleMenu> RoleMenus { get; set; }
     }
 }

@@ -7,11 +7,57 @@ using Ecommorce.Model.EntityConfiguration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Reflection.Emit;
 using Ecommorce.Model.ProductModels;
+using Ecommorce.Model.NewFolder;
 
 namespace Ecommorce.Model
 {
     public class ApplicationDbContext : IdentityDbContext<UsersIdentity, RoleIdentity, string>
     {
+        public DbSet<Car> Cars { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+      
+        public DbSet<Make> Makes { get; set; }
+        public DbSet<Radio> Radios { get; set; }
+        public DbSet<Driver> Drivers { get; set; }
+        public DbSet<CarDriver> CarsToDrivers { get; set; }
+
+        public DbSet<UserFollower> UserFollowers { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+
+        public DbSet<IdentityUserClaim<string>> UserClaims { get; set; }
+        public DbSet<IdentityRoleClaim<string>> RoleClaims { get; set; }
+
+        public DbSet<UsersIdentity> usersIdentities { get; set; }
+        public DbSet<RoleIdentity> roleIdentities { get; set; }
+
+        public DbSet<CoreMenu> coreMenus { get; set; }
+        public DbSet<CoreRoleMenu> coreRoleMenus { get; set; }
+
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<ProductBrand> ProductBrands { get; set; }
+
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+
+        public DbSet<ProductMedia> ProductMedias { get; set; }
+
+        public DbSet<ProductPublish> ProductPublishes { get; set; }
+
+        public DbSet<ProductOption> ProductOptions { get; set; }
+
+        public DbSet<ProductOptionData> ProductOptionDatas { get; set; }
+
+        public DbSet<ProductOptionValue> ProductOptionValues { get; set; }
+
+        public DbSet<ProductAttribute> ProductAttributes { get; set; }
+        public DbSet<ProductAttributeData> ProductAttributeDatas { get; set; }
+        public DbSet<ProductAttributeValue> ProductAttributeValues { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+
+        public DbSet<OrderAddress> OrderAddress { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
        : base(options)
@@ -37,10 +83,13 @@ namespace Ecommorce.Model
             modelBuilder.ApplyConfiguration(new ProductOptionDataConfiguration());
             modelBuilder.ApplyConfiguration(new ProductOptionValueConfiguration());
 
-            //modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
 
             modelBuilder.ApplyConfiguration(new UserFollowConfigration());
             modelBuilder.ApplyConfiguration(new RoleConfigration());
+
+            modelBuilder.ApplyConfiguration(new MenuConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleMenuConfiguration());
 
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
@@ -48,54 +97,18 @@ namespace Ecommorce.Model
             modelBuilder.ApplyConfiguration(new MakeConfiguration());
             modelBuilder.ApplyConfiguration(new RadioConfiguration());
 
+
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+
+            modelBuilder.ApplyConfiguration(new OrderItemsConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderAddressConfiguration());
+
             base.OnModelCreating(modelBuilder);
         
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    base.OnConfiguring(optionsBuilder);
 
-        //    optionsBuilder.UseSqlServer();
-        //}
-
-        public DbSet<Car> Cars { get; set; }
-        public DbSet<Make> Makes { get; set; }
-        public DbSet<Radio> Radios { get; set; }
-        public DbSet<Driver> Drivers { get; set; }
-        public DbSet<CarDriver> CarsToDrivers { get; set; }
-
-        public DbSet<UserFollower> UserFollowers { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; }
-
-        public DbSet<IdentityUserClaim<string>> UserClaims { get; set; }
-        public DbSet<IdentityRoleClaim<string>> RoleClaims { get; set; }
-
-        public DbSet<UsersIdentity> usersIdentities { get; set; }
-        public DbSet<RoleIdentity> roleIdentities { get; set; }
-
-        public DbSet<Product> Products {  get; set; }
-
-        public DbSet< ProductBrand> ProductBrands { get; set; }
-
-        public DbSet< ProductCategory> ProductCategories { get; set; }
-
-        public DbSet<ProductMedia> ProductMedias {  get; set; }
-
-        public DbSet<ProductPublish> ProductPublishes { get; set; }
-
-        public DbSet<ProductOption> ProductOptions { get; set; }
-
-        public DbSet< ProductOptionData> ProductOptionDatas { get; set; }
-
-        public DbSet<ProductOptionValue> ProductOptionValues { get; set; }
-
-        public DbSet<ProductAttribute> ProductAttributes { get; set; }
-        public DbSet<ProductAttributeData> ProductAttributeDatas { get; set; }
-        public DbSet<ProductAttributeValue> ProductAttributeValues { get; set; }
-
+    
     }
 
 }

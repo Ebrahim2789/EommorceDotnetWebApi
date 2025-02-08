@@ -11,6 +11,7 @@ namespace Ecommorce.Model.NewFolder
     {
         public int Id { get; set; }
         public int ParentId { get; set; }
+        public virtual CoreMenu CoreMenus { get; set; }
         public string ModelName { get; set; }
         public string ShortName { get; set; }
         public string IconUrl { get; set; }

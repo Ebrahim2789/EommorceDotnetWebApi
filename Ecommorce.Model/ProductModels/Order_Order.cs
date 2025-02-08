@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ecommorce.Model.ProductModels
 {
-    public class Order_Order : Common
+    public class Order : Common
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -24,6 +24,7 @@ namespace Ecommorce.Model.ProductModels
         public string ShippingMethod { get; set; }
         public string PaymentMethod { get; set; }
         public decimal PaymentFeeAmount { get; set; }
+        
         public DateTime PaymentOn { get; set; }
         public DateTime PaymentEndOn { get; set; }
         public decimal SubTotal { get; set; }
@@ -38,6 +39,7 @@ namespace Ecommorce.Model.ProductModels
         public int CreatedById { get; set; }
         public int UpdatedById { get; set; }
 
+        public virtual ICollection<OrderItem> OrderItems { get; set; }
 
 
 

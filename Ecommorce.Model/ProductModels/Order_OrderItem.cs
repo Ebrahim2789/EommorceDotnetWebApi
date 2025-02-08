@@ -3,12 +3,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ecommorce.Model.ProductModels
 {
-    public class Order_OrderItem : Common
+    public class OrderItem : Common
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int ProductId { get; set; }
         public int OrderId { get; set; }
+
+        public virtual Order Order { get; set; }
+        public virtual Product Product { get; set; }
         public decimal ProductPrice { get; set; }
         public string ProductName { get; set; }
         public string ProductMediaUrl { get; set; }
@@ -21,7 +24,7 @@ namespace Ecommorce.Model.ProductModels
         public string CreatedById { get; set; }
         public string UpdatedById { get; set; }
 
-
+      
 
 
     }

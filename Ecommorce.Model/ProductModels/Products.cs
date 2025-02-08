@@ -60,6 +60,9 @@ namespace Ecommorce.Model.ProductModels
 
         public ICollection<ProductAttributeValue> AttributesValues { get; set; }
 
+
+        public virtual ICollection<OrderItem> OrderDetails { get; set; }
+
     }
 
 }
