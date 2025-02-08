@@ -7,6 +7,7 @@ using AutoMapper;
 using Ecommorce.Application.ILogger;
 using Ecommorce.Model.DTO.Outgoing;
 using Ecommorce.Application.IRepository;
+using Ecommorce.Application.Repository;
 
 namespace Ecommorce.API.Controllers
 {
@@ -17,11 +18,11 @@ namespace Ecommorce.API.Controllers
         private readonly ApplicationDbContext _context;
         private static List<Driver> drivers = new List<Driver>();
 
-        private readonly IDriverRepository _driverRepository;
+        private readonly IRepositoryManager _driverRepository;
         private readonly IMapper _mapper;
         private ILoggerManger _logger;
 
-        public DriversController(ApplicationDbContext context,ILoggerManger logger,IMapper mapper,IDriverRepository driverRepository)
+        public DriversController(ApplicationDbContext context,ILoggerManger logger,IMapper mapper, IRepositoryManager driverRepository)
         {
             _logger = logger;
             _mapper = mapper;
@@ -34,7 +35,7 @@ namespace Ecommorce.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Driver>>> GetDrivers()
         {
-          var result= await  _driverRepository.GetAllAsync();
+          var result= await  _driverRepository.Driver.GetAllAsync();
 
 
             return Ok(result);
@@ -44,7 +45,7 @@ namespace Ecommorce.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Driver>> GetDriver(int id)
         {
-            var driver = await _driverRepository.GetByIdAsync(id);
+            var driver = await _driverRepository.Driver.GetByIdAsync(id);
 
             if (driver == null)
             {
@@ -92,7 +93,7 @@ namespace Ecommorce.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Driver>> PostDriver(Driver driver)
         {
-               await _driverRepository.AddAsync(driver);
+               await _driverRepository.Driver.AddAsync(driver);
 
             return CreatedAtAction("GetDriver", new { id = driver.Id }, driver);
         }
@@ -157,13 +158,13 @@ namespace Ecommorce.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDriver(int id)
         {
-            var driver = await _driverRepository.GetByIdAsync(id);
+            var driver = await _driverRepository.Driver.GetByIdAsync(id);
             if (driver == null)
             {
                 return NotFound();
             }
 
-            _driverRepository.Delete(driver);
+            _driverRepository.Driver.Delete(driver);
 
             return NoContent();
         }

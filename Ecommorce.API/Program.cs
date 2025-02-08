@@ -1,9 +1,6 @@
-using Ecommorce.API;
 using Ecommorce.API.Controllers;
-using Ecommorce.Application.IRepository;
 using Ecommorce.Application.Repository;
 using Ecommorce.Model.IdentityModel;
-using Ecommorce.Infrastructure.Repositories;
 using Ecommorce.Infrastructure.Repository;
 using Ecommorce.Infrastructure.Services;
 using Ecommorce.Model;
@@ -12,14 +9,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using AutoMapper;
 using NLog;
 using Ecommorce.Application.ILogger;
 using Ecommorce.Infrastructure.Logger;
 using Ecommorce.Model.Profiles;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Ecommorce.Infrastructure.Extension;
+
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,18 +65,20 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<ICarRepository, CarRepository>();
-builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+builder.Services.AddScoped< IRepositoryManager , RepositoryManager > ();
+
 
 
 builder.Services.AddScoped<AuthService>();
-
+ //ambiguous between the following methods or properties:
+ //'Microsoft.Extensions.DependencyInjection.IdentityServiceCollectionExtensions
 
 builder.Services.AddIdentity<UsersIdentity ,  RoleIdentity>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+
+builder.Services.AddRazorPages();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -110,46 +108,18 @@ app.UseAuthorization();
 app.MapStaticAssets();
 app.MapControllers();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Cars1}/{action=Index}/{id?}")
+app.UseDefaultFiles(); // index.html, default.html, and so on
+app.UseStaticFiles();
+
+app.MapRazorPages();
+
+app.MapGet("/hello", () => "Hello World!");
+
+//app.MapControllerRoute(name: "default",pattern: "{controller=Cars1}/{action=Index}/{id?}").WithStaticAssets();
 
 
-    .WithStaticAssets();
 
-
-
-//using (var scope = app.Services.CreateScope())
-//{
-//    var service = scope.ServiceProvider;
-//    await CreateRole(service);
-//}
 
 app.Run();
 
 
-
-async Task CreateRole(IServiceProvider serviceProvider)
-{
-    var roleManger = serviceProvider.GetRequiredService<RoleManager<RoleIdentity>>();
-    var userManger = serviceProvider.GetRequiredService<UserManager<UsersIdentity>>();
-
-    string roleName = "Admin";
-    string userEmail = "admin@example.com";
-    string userPassword = "Admin@123";
-
-    if (!await roleManger.RoleExistsAsync(roleName))
-    {
-
-        await roleManger.CreateAsync(new RoleIdentity(roleName));
-    }
-    var user = await userManger.FindByEmailAsync(userEmail);
-    if (user == null)
-    {
-        user = new UsersIdentity { UserName = userEmail, Email = userEmail };
-        await userManger.CreateAsync(user, userPassword);
-        await userManger.AddToRoleAsync(user, roleName);
-    }
-
-
-}

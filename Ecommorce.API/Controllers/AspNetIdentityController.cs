@@ -37,6 +37,8 @@ namespace Ecommorce.API.Controllers
             if (!await _roleManager.RoleExistsAsync(roleName))
             {
 
+
+
                 await _roleManager.CreateAsync(new RoleIdentity(roleName));
             }
             var user = await _userManager.FindByEmailAsync(userEmail);

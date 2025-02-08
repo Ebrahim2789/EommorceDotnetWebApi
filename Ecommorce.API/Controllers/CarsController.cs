@@ -9,6 +9,7 @@ using Ecommorce.Model;
 using Ecommorce.Model.Model;
 using Ecommorce.Model.UserModel;
 using Ecommorce.Application.IRepository;
+using Ecommorce.Application.Repository;
 
 namespace Ecommorce.API.Controllers
 {
@@ -19,9 +20,9 @@ namespace Ecommorce.API.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserServices _userServices;
 
-        private readonly ICarRepository _carRepository;
+        private readonly IRepositoryManager  _carRepository;
 
-        public CarsController(ApplicationDbContext context,UserServices userservice,ICarRepository carRepository)
+        public CarsController(ApplicationDbContext context,UserServices userservice, IRepositoryManager carRepository)
         {
             _context = context;
             _userServices= userservice;
@@ -185,7 +186,7 @@ namespace Ecommorce.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Car>> GetCar(int id)
         {
-            var car = await _carRepository.GetByIdAsync(id);    
+            var car = await _carRepository.Car.GetByIdAsync(id);    
 
             if (car == null)
             {
@@ -232,7 +233,7 @@ namespace Ecommorce.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Car>> PostCar(Car car)
         {
-           await  _carRepository.AddAsync(car);
+           await  _carRepository.Car.AddAsync(car);
 
             return CreatedAtAction("GetCar", new { id = car.Id }, car);
         }
@@ -241,13 +242,13 @@ namespace Ecommorce.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCar(int id)
         {
-            var car = await _carRepository.GetByIdAsync(id);
+            var car = await _carRepository.Car.GetByIdAsync(id);
             if (car == null)
             {
                 return NotFound();
             }
 
-             _carRepository.Delete(car);
+             _carRepository.Car.Delete(car);
 
             return NoContent();
         }

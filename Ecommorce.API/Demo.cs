@@ -84,3 +84,34 @@ namespace Ecommorce.API
         }
     }
 }
+
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var service = scope.ServiceProvider;
+//    await CreateRole(service);
+//}
+
+
+//async Task CreateRole(IServiceProvider serviceProvider)
+//{
+//    var roleManger = serviceProvider.GetRequiredService<RoleManager<RoleIdentity>>();
+//    var userManger = serviceProvider.GetRequiredService<UserManager<UsersIdentity>>();
+
+//    string roleName = "Admin";
+//    string userEmail = "admin@example.com";
+//    string userPassword = "Admin@123";
+
+//    if (!await roleManger.RoleExistsAsync(roleName))
+//    {
+
+//        await roleManger.CreateAsync(new RoleIdentity(roleName));
+//    }
+//    var user = await userManger.FindByEmailAsync(userEmail);
+//    if (user == null)
+//    {
+//        user = new UsersIdentity { UserName = userEmail, Email = userEmail };
+//        await userManger.CreateAsync(user, userPassword);
+//        await userManger.AddToRoleAsync(user, roleName);
+//    }
+//}
