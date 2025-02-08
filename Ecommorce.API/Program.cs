@@ -15,7 +15,7 @@ using Ecommorce.Infrastructure.Logger;
 using Ecommorce.Model.Profiles;
 using Ecommorce.Infrastructure.Extension;
 
-using Microsoft.Extensions.DependencyInjection;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,12 +70,12 @@ builder.Services.AddScoped< IRepositoryManager , RepositoryManager > ();
 
 
 builder.Services.AddScoped<AuthService>();
- //ambiguous between the following methods or properties:
- //'Microsoft.Extensions.DependencyInjection.IdentityServiceCollectionExtensions
-
-builder.Services.AddIdentity<UsersIdentity ,  RoleIdentity>()
+//ambiguous between the following methods or properties:
+builder.Services.AddIdentity<UsersIdentity, RoleIdentity>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+
 
 
 builder.Services.AddRazorPages();

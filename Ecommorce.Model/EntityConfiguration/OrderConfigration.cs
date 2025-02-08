@@ -23,10 +23,12 @@ namespace Ecommorce.Model.EntityConfiguration
             builder.Property(p => p.SubTotalWithDiscount).HasColumnType("decimal(18,2)");
             builder.Property(p => p.OrderTotal).HasColumnType("decimal(18,2)");
             builder.Property(p => p.DiscountAmount).HasColumnType("decimal(18,2)");
+            builder.Property(p => p.PaymentFeeAmount).HasColumnType("decimal(18,2)");
 
-      
 
-            //RefundAmount SubTotal SubTotalWithDiscount OrderTotal DiscountAmount
+
+
+            //RefundAmount SubTotal SubTotalWithDiscount OrderTotal DiscountAmount PaymentFeeAmount
         }
     }
     public class OrderItemsConfiguration : IEntityTypeConfiguration<OrderItem>

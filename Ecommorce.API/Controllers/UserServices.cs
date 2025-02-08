@@ -1,4 +1,5 @@
-﻿using Ecommorce.Model;
+﻿using Ecommorce.Application.Repository;
+using Ecommorce.Model;
 using Ecommorce.Model.Model;
 using Ecommorce.Model.UserModel;
 using Microsoft.AspNetCore.Mvc;
@@ -8,19 +9,18 @@ namespace Ecommorce.API.Controllers
 {
     public class UserServices
     {
-        private readonly ApplicationDbContext _contex;
-        
-
-        public UserServices(ApplicationDbContext context)
+        private readonly IRepositoryManager _repository;
+        public UserServices(IRepositoryManager repository)
         {
-            _contex = context;
+            _repository = repository;
         }
+
 
         public async Task AddUserWithFollowerAndRole(User user, int followerids, int roleids)
         {
 
-            var role1 = _contex.Roles.Find(roleids);
-            var user2 = _contex.Users.Find(followerids);
+            var role1 = _repository.Role.GetByIdAsync(roleids);
+            var user2 =await _repository.User.GetByIdAsync(followerids);
             if (user == null||role1==null )
             {
                 throw new ArgumentNullException("user");
@@ -38,20 +38,16 @@ namespace Ecommorce.API.Controllers
 
             var userFollowers = new UserFollower();
 
-            //{ 
-
-            //FollowerId=1,
-            //FollowingId=users.Id
-
-            //};
-            userFollowers.Follower = user2;
+        
+            
             userFollowers.FollowingId = users.Id;
             userFollowers.FollowerId = user2.Id;
+
             userFollowers.Following = user;
+            userFollowers.Follower = user2;
 
             UserRole userRole = new UserRole();
 
-            userRole.RoleUserName = role1;
             userRole.RoleId = role1.Id;
             userRole.UserId = user.Id;
             userRole.UserRoleName = users;
@@ -59,24 +55,10 @@ namespace Ecommorce.API.Controllers
             users.UserRoles.Add(userRole);
             users.Followers.Add(userFollowers);
            
- 
-            _contex.Users.Add(users);
-
-            await _contex.SaveChangesAsync();
+            _repository.User.AddAsync(user);
 
         }
 
 
-        public async Task<ActionResult<IEnumerable<User>>> GetAllUser()
-        {
-
-
-
-            return await _contex.Users.
-                Include(users => users.UserRoles)
-                .ThenInclude(ur=>ur.RoleUserName)
-                .Include(users => users.Followers)
-                .ToListAsync();
-        }
     }
 }

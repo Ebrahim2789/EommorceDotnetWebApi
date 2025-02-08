@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ecommorce.Model.DTO
 {
-    internal class LoginDTO
+    public class LoginDTO
     {
         // Email input from the user during login.
         [EmailAddress]

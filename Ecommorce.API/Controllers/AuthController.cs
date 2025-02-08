@@ -3,11 +3,13 @@ using Ecommorce.Application.IRepository;
 using Ecommorce.Application.Repository;
 using Ecommorce.Infrastructure.Services;
 using Ecommorce.Model;
+using Ecommorce.Model.DTO;
 using Ecommorce.Model.UserModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NuGet.Common;
+using NuGet.Protocol.Core.Types;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -19,9 +21,6 @@ namespace Ecommorce.API.Controllers
     public class AuthController :ControllerBase
     {
         private readonly AuthService _authService;
-
-        private static readonly Dictionary<string, string> _refreshToken;
-
 
         private readonly IConfiguration _configuration;
 
@@ -36,7 +35,7 @@ namespace Ecommorce.API.Controllers
         
 
         [HttpPost("Login")]
-        public async Task<ActionResult<IEnumerable<User>>> Login([FromBody] AddUserModel model)
+        public async Task<ActionResult<IEnumerable<User>>> Login([FromBody] LoginDTO model)
         {
             var users = await _repository.User.FindByCondition(users=> users.Email==model.Email).Include(users => users.UserRoles)
                   .ThenInclude(ur => ur.RoleUserName)
@@ -47,11 +46,10 @@ namespace Ecommorce.API.Controllers
        
 
             var claiems = new List<Claim>() {
-                new Claim(JwtRegisteredClaimNames.Email, model.Email),
+                new Claim(JwtRegisteredClaimNames.PreferredUsername, model.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
 
             };
-
 
 
             foreach (var userRole in users.UserRoles)
@@ -59,50 +57,53 @@ namespace Ecommorce.API.Controllers
                 claiems.Add(new Claim(ClaimTypes.Role, userRole.RoleUserName.Name));
             }
 
-
-
             var accessToken = _authService.BuildToken(claiems);
             var refreshToken = _authService.GenretRefreshToken();
 
-            //_refreshToken[refreshToken]=model.Email;
 
-            //_refreshToken[refreshToken] ="";
-
-            //SaveRefreshToken(string username, string token)
+            await _repository.Token.SaveRefreshToken(model.UserName, refreshToken);
 
             return Ok(new {  accessToken, refreshToken });
 
         }
         [HttpPost("Refresh")]
 
-        public IActionResult Refresh([FromBody] RefreshRequst request)
+        public async Task< IActionResult> Refresh([FromBody] RefreshTokenRequest request)
         {
-           
-            if (!_refreshToken.ContainsKey(request.RefreshToken))
-                return Unauthorized("Invalide Refresh Token");
-            var userName=_refreshToken[request.RefreshToken];
-           //var user= _repository.GetUserByEmailAsync(userName);
+            var result =   _repository.Token.RetrieveUsernameByRefreshToken(request.RefreshToken);
 
-      
+            //if (!_refreshToken.ContainsKey(request.RefreshToken))
+            //    return Unauthorized("Invalide Refresh Token");
+
+
+            var userName= result.Result;
+            if (userName == null)    return Unauthorized("Invalide Refresh Token");
+
+
+            var users = await _repository.User.FindByCondition(users => users.UserName == userName).Include(users => users.UserRoles)
+                 .ThenInclude(ur => ur.RoleUserName)
+              .FirstOrDefaultAsync(u => u.UserName == userName);
+
 
             var claiems = new List<Claim>() {
-                new Claim(JwtRegisteredClaimNames.Email, request.Email),
+                new Claim(JwtRegisteredClaimNames.PreferredUsername, userName),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
 
             };
+            foreach (var userRole in users.UserRoles)
+            {
+                claiems.Add(new Claim(ClaimTypes.Role, userRole.RoleUserName.Name));
+            }
 
             var newaccessToken = _authService.BuildToken(claiems);
             var newRefreshToken = _authService.GenretRefreshToken();
 
-            //RevokeRefreshToken(string refreshToken)
 
+             await  _repository.Token.RevokeRefreshToken(request.RefreshToken);
 
-            _refreshToken.Remove( request.RefreshToken);
-            _refreshToken[newRefreshToken] = userName;
+            await _repository.Token.SaveRefreshToken(userName, newRefreshToken);
 
-            //RetrieveUsernameByRefreshToken(string refreshToken)
-
-
+            //"refreshToken": "nyMdapAFCL+yJRCT1h4QAWeSjNlLf6pTCrVlFQUrpkQ="
 
             return Ok(new { newaccessToken, newRefreshToken });
 
@@ -114,10 +115,4 @@ namespace Ecommorce.API.Controllers
 
 
 
-public class RefreshRequst
-    {
-        public string RefreshToken { get; set; }
-        public string Email { get; set; }
-        
-    }
 }

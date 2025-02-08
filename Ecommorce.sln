@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommorce.API", "Ecommorce.API\Ecommorce.API.csproj", "{679D3F3A-31D1-4176-8B8E-ECE85CC93D31}"
 EndProject
@@ -36,5 +36,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {36BB37F2-C26D-4154-AB3E-450FEC1A1DA0}
 	EndGlobalSection
 EndGlobal

@@ -13,7 +13,7 @@ namespace Ecommorce.Application.IRepository
     {
         Task<User> GetUserByEmailAsync(string email);
         Task<User?> ValidateUser(string UserName, string password);
- 
+        Task<string> GenerateUniqueOpenIdAysnc();
 
 
 

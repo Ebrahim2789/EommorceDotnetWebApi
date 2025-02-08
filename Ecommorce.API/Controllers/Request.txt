@@ -1,3 +1,3 @@
-  "email": "Abdaalasd@gmail.com",
+  "email": "Abdaalaskd@gmail.com",
   "password": "jonepassword",
-  "userName": "Abdalla jolle"
+  "userName": "Abdallaa jolle"

@@ -20,6 +20,10 @@ using Ecommorce.Infrastructure.Repository;
 using Ecommorce.Application.Repository;
 using NuGet.Protocol.Core.Types;
 using Ecommorce.Application.IRepository;
+using Ecommorce.Model.DTO;
+using Ecommorce.Model.Shared;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using Azure;
 
 namespace Ecommorce.API.Controllers
 {
@@ -35,7 +39,7 @@ namespace Ecommorce.API.Controllers
 
         // GET: api/Users
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             var user = await _repository.Role.GetByIdAsync(2);
@@ -52,24 +56,47 @@ namespace Ecommorce.API.Controllers
         }
 
         [HttpPost("add")]
-        [Authorize]
-        public async Task<ActionResult<User>> AddUser([FromBody] AddUserModel user)
+        //[Authorize]
+        public async Task<ActionResult<ApiResponse<User>>> AddUser([FromBody] RegisterDTO user)
         {
-           var result=  await _repository.User.FindByCondition(u => u.UserName == user.UserName || u.Email == user.Email).ToListAsync();
+            var response = new ApiResponse<User>();
+            var result=  await _repository.User.GetUserByEmailAsync(user.Email);
            
             if (result!=null)
             {
-                return BadRequest("UserEmail and username ares alrready exist");
+                response = new ApiResponse<User>(result, true, "UserEmail and username ares alrready exist");
+                return BadRequest(response);
             }
             var users = new User
             {
                 UserName = user.UserName,
                 Email = user.Email,
                 Password = user.Password,
+                UserOpenId = await _repository.User.GenerateUniqueOpenIdAysnc(),
+                Followers = new List<UserFollower>(),
+                Following = new List<UserFollower>(),
+                UserRoles = new List<UserRole>()
             };
-            await _repository.User.AddAsync(users);
 
-            return Ok(new { message = "users added successfully", usersId = users.Id });
+            var role = _repository.Role.GetByIdAsync(2);
+
+
+            UserRole userRole = new UserRole();
+
+       
+            userRole.RoleId = role.Id;
+            userRole.UserId = users.Id;
+            userRole.UserRoleName = users;
+
+            users.UserRoles.Add(userRole);
+        
+
+
+            await _repository.User.AddAsync(users);
+             response = new ApiResponse<User>(users, true, "User added Successfuly ");
+
+
+            return Ok(response);
         }
 
         // GET: api/Users/5
@@ -77,16 +104,18 @@ namespace Ecommorce.API.Controllers
         [Authorize]
         public async Task<ActionResult<User>> GetUser(int id)
         {
+            var response = new ApiResponse<User>();
             var user = await _repository.User.GetByIdAsync(id);
 
             if (user == null)
             {
-                return NotFound();
+                response = new ApiResponse<User>(user, true, "User not found");
+                return BadRequest(response);
             }
 
 
-
-            return user;
+            response = new ApiResponse<User>(user, true, "User not found");
+            return Ok(response);
         }
 
         // PUT: api/Users/5
@@ -95,16 +124,22 @@ namespace Ecommorce.API.Controllers
         //[Authorize(Roles = "Customer")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
+            var response =new ApiResponse<User>();
             if (id != user.Id)
             {
-                return BadRequest();
+
+                 response = new ApiResponse<User>(user, true, "User not found");
+                return BadRequest(response);
             }
             var isSuccess = await _repository.User.GetByIdAsync(id);
-            if (isSuccess == null) return BadRequest("User not found");
+            if (isSuccess == null) {
+                 response = new ApiResponse<User>(user, true, "User not found");
+                return BadRequest(response);
+            }
 
             _repository.User.Update(user);
-
-            return Ok("");
+             response = new ApiResponse<User>(user, true, "User Updated seccessfuly");
+            return Ok(response);
         }
 
         // POST: api/Users
@@ -135,16 +170,5 @@ namespace Ecommorce.API.Controllers
             return NoContent();
         }
 
-
-
-
-
-
-    }
-    public class AddUserModel
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string UserName { get; set; }
     }
 }

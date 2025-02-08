@@ -15,7 +15,7 @@ namespace Ecommorce.Model.EntityConfiguration
         {
             builder.HasKey(m=>m.Id);
 
-            builder.HasOne(m=>m.CoreMenus).WithMany().HasForeignKey(m=>m.ParentId);
+            builder.HasOne(m=>m.CoreMenus).WithMany().HasForeignKey(m=>m.ParentId).OnDelete(DeleteBehavior.NoAction);
 
 
         }

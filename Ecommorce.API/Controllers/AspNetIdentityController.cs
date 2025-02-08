@@ -17,12 +17,17 @@ namespace Ecommorce.API.Controllers
             _roleManager = roleManager;
 
         }
-        [HttpGet("check-role")]
-        public async Task<IActionResult> CheckUserRole()
+        [HttpPost("check-role")]
+        public async Task<IActionResult> CheckUserRole([FromBody] UsersIdentity user)
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null) return Unauthorized("User not found ");
-            bool isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+
+            if (user == null) return null;
+
+         
+            var users = await _userManager.FindByEmailAsync(user.Email);
+
+            if (users == null) return Unauthorized("User not found ");
+            bool isAdmin = await _userManager.IsInRoleAsync(users, "Admin");
             return Ok(isAdmin ? "User is an Admin" : "User is not an Admin");
         }
 
@@ -31,15 +36,19 @@ namespace Ecommorce.API.Controllers
         {
 
             string roleName = "Admin";
-            string userEmail = "admin@example.com";
+            string userEmail = "admin2@example.com";
             string userPassword = "Admin@123";
 
             if (!await _roleManager.RoleExistsAsync(roleName))
             {
+               var role = new RoleIdentity
+                {
+                   Role=roleName,
+                   Name=roleName,
+                };
 
 
-
-                await _roleManager.CreateAsync(new RoleIdentity(roleName));
+                await _roleManager.CreateAsync(role);
             }
             var user = await _userManager.FindByEmailAsync(userEmail);
             if (user == null)
@@ -49,6 +58,8 @@ namespace Ecommorce.API.Controllers
                     UserName = userEmail,
                     Email = userEmail
                 };
+
+                
                 await _userManager.CreateAsync(user);
                 await _userManager.AddToRoleAsync(user, roleName);
             }

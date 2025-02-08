@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Ecommorce.Model.NewFolder
@@ -11,6 +12,7 @@ namespace Ecommorce.Model.NewFolder
     {
         public int Id { get; set; }
         public int ParentId { get; set; }
+        [JsonIgnore]
         public virtual CoreMenu CoreMenus { get; set; }
         public string ModelName { get; set; }
         public string ShortName { get; set; }
