@@ -18,32 +18,33 @@ namespace Ecommorce.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController :ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;
 
         private readonly IConfiguration _configuration;
-
+        private readonly TokenStorage _tokenStorage;
         private readonly IRepositoryManager _repository;
-        public AuthController(AuthService authService,  IRepositoryManager repositoryManager ,IConfiguration configuration) 
+        public AuthController(AuthService authService, IRepositoryManager repositoryManager, IConfiguration configuration, TokenStorage tokenStorage)
         {
-            _authService=authService;
-          
-            _repository= repositoryManager;
+            _authService = authService;
+            _tokenStorage = tokenStorage;
+
+            _repository = repositoryManager;
             _configuration = configuration;
         }
-        
+
 
         [HttpPost("Login")]
         public async Task<ActionResult<IEnumerable<User>>> Login([FromBody] LoginDTO model)
         {
-            var users = await _repository.User.FindByCondition(users=> users.Email==model.Email).Include(users => users.UserRoles)
+            var users = await _repository.User.FindByCondition(users => users.Email == model.Email).Include(users => users.UserRoles)
                   .ThenInclude(ur => ur.RoleUserName)
                .FirstOrDefaultAsync(u => u.Email == model.Email);
 
 
             if (users == null) return null;
-       
+
 
             var claiems = new List<Claim>() {
                 new Claim(JwtRegisteredClaimNames.PreferredUsername, model.UserName),
@@ -63,21 +64,21 @@ namespace Ecommorce.API.Controllers
 
             await _repository.Token.SaveRefreshToken(model.UserName, refreshToken);
 
-            return Ok(new {  accessToken, refreshToken });
+            return Ok(new { accessToken, refreshToken });
 
         }
         [HttpPost("Refresh")]
 
-        public async Task< IActionResult> Refresh([FromBody] RefreshTokenRequest request)
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
         {
-            var result =   _repository.Token.RetrieveUsernameByRefreshToken(request.RefreshToken);
+            var result = _repository.Token.RetrieveUsernameByRefreshToken(request.RefreshToken);
 
             //if (!_refreshToken.ContainsKey(request.RefreshToken))
             //    return Unauthorized("Invalide Refresh Token");
 
 
-            var userName= result.Result;
-            if (userName == null)    return Unauthorized("Invalide Refresh Token");
+            var userName = result.Result;
+            if (userName == null) return Unauthorized("Invalide Refresh Token");
 
 
             var users = await _repository.User.FindByCondition(users => users.UserName == userName).Include(users => users.UserRoles)
@@ -99,9 +100,11 @@ namespace Ecommorce.API.Controllers
             var newRefreshToken = _authService.GenretRefreshToken();
 
 
-             await  _repository.Token.RevokeRefreshToken(request.RefreshToken);
+            await _repository.Token.RevokeRefreshToken(request.RefreshToken);
 
             await _repository.Token.SaveRefreshToken(userName, newRefreshToken);
+
+            _tokenStorage.SetRefreshToken(newRefreshToken);
 
             //"refreshToken": "nyMdapAFCL+yJRCT1h4QAWeSjNlLf6pTCrVlFQUrpkQ="
 
@@ -111,7 +114,7 @@ namespace Ecommorce.API.Controllers
     }
 
 
-  
+
 
 
 

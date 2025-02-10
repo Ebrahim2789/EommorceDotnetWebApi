@@ -9,13 +9,14 @@ namespace Ecommorce.Model.ProductModels
         public int Id { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
+        [Required]
         public string Description { get; set; }
-   
+        [Required]
         public string Thumbnail { get; set; }
         public string DisplayOrder { get; set; }
         public bool IsPublished { get; set; }
-
-        public int? ParentId { get; set; }
+        [Required]
+        public int ParentId { get; set; }
         [ForeignKey(nameof(ParentId))]
         public virtual ProductCategory ParentCategory { get; set; }
         public ICollection<ProductCategory> SubCategories { get; set; }

@@ -27,6 +27,7 @@ namespace Ecommorce.Model.ProductModels
         public int Stock { get; set; }
         public int OrderMinimumQuantity { get; set; }
         public int OrderMaximumQuantity { get; set; }
+        [Required]
         public string ThumbnailImageUrl { get; set; }
         public string VideoUrl { get; set; }
         [Required]
@@ -53,7 +54,7 @@ namespace Ecommorce.Model.ProductModels
         public ICollection<ProductMedia> Medias { get; set; }
 
 
-
+     
         public virtual ICollection<ProductOption> ProductOptions { get; set; }
         public virtual ICollection<ProductOptionValue> ProductOptionValues { get; set; }
         public ICollection<ProductAttribute> Attributes{ get; set; }

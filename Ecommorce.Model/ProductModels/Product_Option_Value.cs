@@ -14,6 +14,7 @@ namespace Ecommorce.Model.ProductModels
         public virtual Product Product { get; set; }
         public string Value { get; set; }
         public string Display { get; set; }
+        [Required]
         public string Description { get; set; }
         public bool IsDisplay { get; set; }
 

@@ -15,18 +15,20 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Ecommorce.Application.IRepository;
 using System.IdentityModel.Tokens.Jwt;
+using Ecommorce.Application.Repository;
 
 namespace Ecommorce.Infrastructure.Services
 {
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
-        private readonly IUserRepository _userRepository; // Dependency injection for the user repository
+           private readonly IRepositoryManager _userRepository;
+     // Dependency injection for the user repository
         // Constructor
         public BasicAuthenticationHandler(
             IOptionsMonitor<AuthenticationSchemeOptions> options, // Options for configuring authentication schemes
             ILoggerFactory logger, // Factory to create logger objects
             UrlEncoder encoder, // Encoder for URL to ensure safe URLs
-            IUserRepository userRepository) // User repository to handle user data
+            IRepositoryManager userRepository) // User repository to handle user data
             : base(options, logger, encoder) // Pass options, logger, and encoder to the base class
         {
             _userRepository = userRepository; // Initialize user repository with dependency injection
@@ -65,7 +67,7 @@ namespace Ecommorce.Infrastructure.Services
                 // Extract password
                 var password = credentials[1];
                 // Validate user against the stored credentials
-                user = await _userRepository.ValidateUser(username, password);
+                user = await _userRepository.User.ValidateUser(username, password);
             }
             catch (FormatException) // Handle format exceptions for Base64 decoding
             {
@@ -83,7 +85,7 @@ namespace Ecommorce.Infrastructure.Services
             // Create claims based on the valid user identifiers
 
             var claims = new List<Claim>() {
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.PreferredUsername, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
 
             };

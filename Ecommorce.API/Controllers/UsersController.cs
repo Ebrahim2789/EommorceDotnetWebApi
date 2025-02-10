@@ -24,6 +24,7 @@ using Ecommorce.Model.DTO;
 using Ecommorce.Model.Shared;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Azure;
+using Ecommorce.Application.ILogger;
 
 namespace Ecommorce.API.Controllers
 {
@@ -32,26 +33,38 @@ namespace Ecommorce.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
-        public UsersController(IRepositoryManager repository)
+        private ILoggerManger _logger;
+        public UsersController(IRepositoryManager repository, ILoggerManger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
-        // GET: api/Users
         [HttpGet]
         //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            var user = await _repository.Role.GetByIdAsync(2);
+            try
+            {
 
-            var userrole = _repository.User.FindByCondition(u => u.Id == user.Id).Include(u => u.UserRoles).ThenInclude(u => u.RoleUserName);
+                var user = await _repository.Role.GetByIdAsync(2);
 
-            var userfollower = await _repository.User.FindByCondition(u => u.Id == user.Id).Include(u => u.Followers).ThenInclude(u => u.Follower).ToListAsync();
+                var userrole = _repository.User.FindByCondition(u => u.Id == user.Id).Include(u => u.UserRoles).ThenInclude(u => u.RoleUserName);
 
-            // var userfollowing = _repository.User.FindByCondition(u => u.Id == user.Id).Include(users => users.Following)
-            //                    .ThenInclude(users => users.Following);
+                var userfollower = await _repository.User.FindByCondition(u => u.Id == user.Id).Include(u => u.Followers).ThenInclude(u => u.Following).ToListAsync();
 
-            return Ok(userfollower);
+                // var userfollowing = _repository.User.FindByCondition(u => u.Id == user.Id).Include(users => users.Following)
+                //                    .ThenInclude(users => users.Following);
+
+                return Ok(userfollower);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong in the {nameof(GetUsers)}  action {ex} ");
+                return StatusCode(500, "Internal server error");
+            }
+
 
         }
 
@@ -59,99 +72,130 @@ namespace Ecommorce.API.Controllers
         //[Authorize]
         public async Task<ActionResult<ApiResponse<User>>> AddUser([FromBody] RegisterDTO user)
         {
-            var response = new ApiResponse<User>();
-            var result=  await _repository.User.GetUserByEmailAsync(user.Email);
-           
-            if (result!=null)
+            try
             {
-                response = new ApiResponse<User>(result, true, "UserEmail and username ares alrready exist");
-                return BadRequest(response);
+
+                var response = new ApiResponse<User>();
+                var result = await _repository.User.GetUserByEmailAsync(user.Email);
+
+                if (result != null)
+                {
+                    response = new ApiResponse<User>(result, true, "UserEmail and username ares alrready exist");
+                    return BadRequest(response);
+                }
+                var users = new User
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Password = user.Password,
+                    UserOpenId = await _repository.User.GenerateUniqueOpenIdAysnc(),
+                    Followers = new List<UserFollower>(),
+                    Following = new List<UserFollower>(),
+                    UserRoles = new List<UserRole>()
+                };
+
+                var role = _repository.Role.GetByIdAsync(2);
+
+
+                UserRole userRole = new UserRole();
+
+
+                userRole.RoleId = role.Id;
+                userRole.UserId = users.Id;
+                userRole.UserRoleName = users;
+
+                users.UserRoles.Add(userRole);
+
+
+
+                await _repository.User.AddAsync(users);
+                response = new ApiResponse<User>(users, true, "User added Successfuly ");
+
+
+                return Ok(response);
             }
-            var users = new User
+            catch (Exception ex)
             {
-                UserName = user.UserName,
-                Email = user.Email,
-                Password = user.Password,
-                UserOpenId = await _repository.User.GenerateUniqueOpenIdAysnc(),
-                Followers = new List<UserFollower>(),
-                Following = new List<UserFollower>(),
-                UserRoles = new List<UserRole>()
-            };
-
-            var role = _repository.Role.GetByIdAsync(2);
-
-
-            UserRole userRole = new UserRole();
-
-       
-            userRole.RoleId = role.Id;
-            userRole.UserId = users.Id;
-            userRole.UserRoleName = users;
-
-            users.UserRoles.Add(userRole);
-        
-
-
-            await _repository.User.AddAsync(users);
-             response = new ApiResponse<User>(users, true, "User added Successfuly ");
-
-
-            return Ok(response);
+                _logger.LogError($"Something went wrong in the {nameof(AddUser)}  action {ex} ");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
-        // GET: api/Users/5
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var response = new ApiResponse<User>();
-            var user = await _repository.User.GetByIdAsync(id);
-
-            if (user == null)
+            try
             {
+                var response = new ApiResponse<User>();
+                var user = await _repository.User.GetByIdAsync(id);
+
+                if (user == null)
+                {
+                    response = new ApiResponse<User>(user, true, "User not found");
+                    return BadRequest(response);
+                }
+
+
                 response = new ApiResponse<User>(user, true, "User not found");
-                return BadRequest(response);
+                return Ok(response);
             }
-
-
-            response = new ApiResponse<User>(user, true, "User not found");
-            return Ok(response);
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong in the {nameof(GetUsers)}  action {ex} ");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPut("{id}")]
         //[Authorize(Roles = "Customer")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
-            var response =new ApiResponse<User>();
-            if (id != user.Id)
+            try
             {
+                var response = new ApiResponse<User>();
+                if (id != user.Id)
+                {
 
-                 response = new ApiResponse<User>(user, true, "User not found");
-                return BadRequest(response);
-            }
-            var isSuccess = await _repository.User.GetByIdAsync(id);
-            if (isSuccess == null) {
-                 response = new ApiResponse<User>(user, true, "User not found");
-                return BadRequest(response);
-            }
+                    response = new ApiResponse<User>(user, true, "User not found");
+                    return BadRequest(response);
+                }
+                var isSuccess = await _repository.User.GetByIdAsync(id);
+                if (isSuccess == null)
+                {
+                    response = new ApiResponse<User>(user, true, "User not found");
+                    return BadRequest(response);
+                }
 
-            _repository.User.Update(user);
-             response = new ApiResponse<User>(user, true, "User Updated seccessfuly");
-            return Ok(response);
+                _repository.User.Update(user);
+                response = new ApiResponse<User>(user, true, "User Updated seccessfuly");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong in the {nameof(PutUser)}  action {ex} ");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-            await _repository.User.AddAsync(user);
+            try
+            {
+                await _repository.User.AddAsync(user);
 
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+                return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong in the {nameof(PostUser)}  action {ex} ");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         // DELETE: api/Users/5
@@ -159,16 +203,25 @@ namespace Ecommorce.API.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            var user = await _repository.User.GetByIdAsync(id);
-            if (user == null)
+            try
             {
-                return NotFound();
+                var user = await _repository.User.GetByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                _repository.User.Delete(user);
+
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong in the {nameof(DeleteUser)}  action {ex} ");
+                return StatusCode(500, "Internal server error");
             }
 
-            _repository.User.Delete(user);
-
-            return NoContent();
         }
-
     }
 }

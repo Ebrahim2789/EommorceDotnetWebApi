@@ -17,5 +17,15 @@ namespace Ecommorce.Application.Repository
 
         IDriverRepository Driver {get;}
 
+        IProductOptionRepository productOptionRepository {get;}
+        IProductOptionValueRepository productOptionValueRepository {get;}
+        IProductAttributeRepository productAttributeRepository {get;}
+        IProductBrandRepository productBrandRepository {get;}
+
+        IProductAttributeValueRepository productAttributeValueRepository {get;}
+        IProductPublishRepository productPublishRepository {get;}
+        IProductMediaRepository productMediaRepository {get;}
+        IProductCategoryRepository productCategoryRepository {get;}
+
     }
 }

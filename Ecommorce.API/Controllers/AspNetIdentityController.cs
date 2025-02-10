@@ -9,16 +9,16 @@ namespace Ecommorce.API.Controllers
 {
     public class AspNetIdentityController : ControllerBase
     {
-        private readonly UserManager<UsersIdentity> _userManager;
-        private readonly RoleManager<RoleIdentity> _roleManager;
-        public AspNetIdentityController(UserManager<UsersIdentity> userManager, RoleManager<RoleIdentity> roleManager)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        public AspNetIdentityController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
 
         }
         [HttpPost("check-role")]
-        public async Task<IActionResult> CheckUserRole([FromBody] UsersIdentity user)
+        public async Task<IActionResult> CheckUserRole([FromBody] ApplicationUser user)
         {
 
             if (user == null) return null;
@@ -41,27 +41,29 @@ namespace Ecommorce.API.Controllers
 
             if (!await _roleManager.RoleExistsAsync(roleName))
             {
-               var role = new RoleIdentity
-                {
-                   Role=roleName,
+               var role = new ApplicationRole
+               {
+                   
                    Name=roleName,
                 };
 
+                
 
                 await _roleManager.CreateAsync(role);
             }
             var user = await _userManager.FindByEmailAsync(userEmail);
             if (user == null)
             {
-                user = new UsersIdentity
+                user = new ApplicationUser
                 {
                     UserName = userEmail,
                     Email = userEmail
                 };
 
-                
                 await _userManager.CreateAsync(user);
+                
                 await _userManager.AddToRoleAsync(user, roleName);
+                
             }
 
             return Ok(user);

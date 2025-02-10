@@ -7,6 +7,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ecommorce.API.Controllers
 {
+
+// Use the Authenticated HTTP Client
+
+// Inject the HttpClient with the AuthenticatedHttpClientHandler into your services or controllers.
+public class MyService
+{
+    private readonly HttpClient _httpClient;
+
+    public MyService(IHttpClientFactory httpClientFactory)
+    {
+        _httpClient = httpClientFactory.CreateClient("AuthenticatedClient");
+    }
+
+    public async Task<string> GetProtectedDataAsync()
+    {
+        var response = await _httpClient.GetAsync("http://localhost:5179/api/Cars");
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsStringAsync();
+    }
+}
+
+
+
+
+
     public class UserServices
     {
         private readonly IRepositoryManager _repository;

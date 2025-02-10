@@ -1,4 +1,5 @@
 ﻿
+using Ecommorce.Application.ILogger;
 using Ecommorce.Application.IRepository;
 using Ecommorce.Application.Repository;
 using Ecommorce.Model.ProductModels;
@@ -14,12 +15,22 @@ namespace Ecommorce.API.Controllers
     {
 
         private readonly IRepositoryManager _repository;
+        private readonly ILoggerManger _logger;
 
-        public ProductsController(IRepositoryManager repository)
+        public ProductsController(IRepositoryManager repository, ILoggerManger logger)
         {
             _repository = repository;
+            _logger = logger;
+        }
 
 
+        
+        [HttpGet("grid")]
+        public async Task<ActionResult<ApiResponse<IEnumerable<Product>>>> GetProductGrid()
+        {
+            var products = await _repository.Product.GetAllAsync();
+            var response = new ApiResponse<IEnumerable<Product>>(products, true, "Products retrieved successfully");
+            return Ok(response);
         }
 
         [HttpGet]
@@ -99,5 +110,30 @@ namespace Ecommorce.API.Controllers
             return Ok(response);
 
         }
+
+
+
+        [HttpPost("PublishProduct")]
+
+        public async Task<ActionResult<ApiResponse<Product>>> PublishProduct(Product product)
+        {
+        //public async Task<ActionResult<ApiResponse<ProductPublish>>> PublishProduct(PublishProductDTO product)
+        //{
+            var createdProduct = _repository.Product.AddAsync(product);
+            var data = await _repository.Product.GetByIdAsync(createdProduct.Id);
+
+            var response = new ApiResponse<Product>(data, true, "Product added successfully");
+
+            return CreatedAtAction(nameof(GetProductById), new { id = createdProduct.Id }, response);
+        }
+    }
+
+
+    public class PublishProductDTO
+    {
+        public int ProductId { get; set; }
+        public bool IsPublished { get; set; }
+        public DateTime PublishTimeFrom { get; set; }
+        public DateTime PublishTimeTo { get; set; }
     }
 }

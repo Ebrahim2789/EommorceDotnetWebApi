@@ -11,4 +11,6 @@ namespace Ecommorce.Application.IRepository
 
     }
 
+
+
 }

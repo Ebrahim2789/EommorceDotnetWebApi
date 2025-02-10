@@ -19,16 +19,25 @@ namespace Ecommorce.API.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserServices _userServices;
+        private readonly MyService _myService;
+        private readonly IRepositoryManager _carRepository;
 
-        private readonly IRepositoryManager  _carRepository;
-
-        public CarsController(ApplicationDbContext context,UserServices userservice, IRepositoryManager carRepository)
+        public CarsController(ApplicationDbContext context, UserServices userservice, IRepositoryManager carRepository, MyService myService)
         {
             _context = context;
-            _userServices= userservice;
-            _carRepository= carRepository;
+            _userServices = userservice;
+            _carRepository = carRepository;
+            _myService = myService;
 
         }
+        [HttpGet("GetProtectedDataAsync")]
+
+        public Task<string> GetProtectedDataAsync()
+        {
+            return _myService.GetProtectedDataAsync();
+        }
+
+
 
         [HttpGet("add")]
         public void Get()
@@ -131,14 +140,14 @@ namespace Ecommorce.API.Controllers
             {
                 Console.WriteLine($"{c.PetName} is {c.Color}");
             }
-           
+
         }
 
-            [HttpGet("getMake")]
+        [HttpGet("getMake")]
         public async Task<ActionResult<IEnumerable<Make>>> GetMakes()
         {
             return await _context.Makes.
-                Include(m=>m.Cars)
+                Include(m => m.Cars)
                 .ToListAsync();
         }
 
@@ -147,14 +156,14 @@ namespace Ecommorce.API.Controllers
         {
             var user = new User
             {
-                UserName="hosooos",
-                Email="Adaalad@gmail.com",
-                Password="jonepassword",
+                UserName = "hosooos",
+                Email = "Adaalad@gmail.com",
+                Password = "jonepassword",
             };
             await _userServices.AddUserWithFollowerAndRole(
                 user,
-                followerids:1,
-                roleids:1
+                followerids: 1,
+                roleids: 1
                 );
         }
 
@@ -173,10 +182,10 @@ namespace Ecommorce.API.Controllers
         public async Task<ActionResult<IEnumerable<Car>>> GetCars()
         {
 
-            var car=await _context.Cars
-                .Include(d=>d.CarDrivers)
-                .Include(d=>d.MakeNavigation)
-                .Include(d=>d.Drivers)
+            var car = await _context.Cars
+                .Include(d => d.CarDrivers)
+                .Include(d => d.MakeNavigation)
+                .Include(d => d.Drivers)
                    .Include(d => d.RadioNavigation)
                 .ToListAsync();
             return car;
@@ -186,7 +195,7 @@ namespace Ecommorce.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Car>> GetCar(int id)
         {
-            var car = await _carRepository.Car.GetByIdAsync(id);    
+            var car = await _carRepository.Car.GetByIdAsync(id);
 
             if (car == null)
             {
@@ -205,7 +214,7 @@ namespace Ecommorce.API.Controllers
             {
                 return BadRequest();
             }
-            
+
 
             _context.Entry(car).State = EntityState.Modified;
 
@@ -233,7 +242,7 @@ namespace Ecommorce.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Car>> PostCar(Car car)
         {
-           await  _carRepository.Car.AddAsync(car);
+            await _carRepository.Car.AddAsync(car);
 
             return CreatedAtAction("GetCar", new { id = car.Id }, car);
         }
@@ -248,7 +257,7 @@ namespace Ecommorce.API.Controllers
                 return NotFound();
             }
 
-             _carRepository.Car.Delete(car);
+            _carRepository.Car.Delete(car);
 
             return NoContent();
         }

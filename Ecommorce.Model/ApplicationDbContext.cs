@@ -11,26 +11,38 @@ using Ecommorce.Model.NewFolder;
 
 namespace Ecommorce.Model
 {
-    public class ApplicationDbContext : IdentityDbContext<UsersIdentity, RoleIdentity, string>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string, IdentityUserClaim<string>, ApplicationUserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>
     {
+
+        //public class ApplicationDbContext: IdentityDbContext< ApplicationUser, ApplicationRole, string IdentityUserClaim<string>, ApplicationUserRole, IdentityUserLogin<string>   IdentityRoleClaim<string>, IdentityUserToken<string>>
+    //    public class ApplicationDbContext : IdentityDbContext< ApplicationUser, ApplicationRole, string, ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationRoleClaim, ApplicationUserToken>
+    //{
         public DbSet<Car> Cars { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
-      
+
         public DbSet<Make> Makes { get; set; }
         public DbSet<Radio> Radios { get; set; }
         public DbSet<Driver> Drivers { get; set; }
         public DbSet<CarDriver> CarsToDrivers { get; set; }
+
+
 
         public DbSet<UserFollower> UserFollowers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
 
-        public DbSet<IdentityUserClaim<string>> UserClaims { get; set; }
-        public DbSet<IdentityRoleClaim<string>> RoleClaims { get; set; }
 
-        public DbSet<UsersIdentity> usersIdentities { get; set; }
-        public DbSet<RoleIdentity> roleIdentities { get; set; }
+
+        //public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        //public DbSet<ApplicationRole> ApplicationRole { get; set; }
+        //public DbSet<ApplicationUserRole> ApplicationUserRole { get; set; }
+
+        //public DbSet<ApplicationUserClaim> ApplicationUserClaim { get; set; }
+        //public DbSet<ApplicationUserLogin> ApplicationUserLogin { get; set; }
+        //public DbSet<ApplicationRoleClaim> ApplicationRoleClaim { get; set; }
+        //public DbSet<ApplicationUserToken> ApplicationUserToken { get; set; }
+
 
         public DbSet<CoreMenu> coreMenus { get; set; }
         public DbSet<CoreRoleMenu> coreRoleMenus { get; set; }
@@ -104,11 +116,95 @@ namespace Ecommorce.Model
             modelBuilder.ApplyConfiguration(new OrderAddressConfiguration());
 
             base.OnModelCreating(modelBuilder);
-        
+
+
+
+            modelBuilder.Entity<ApplicationUser>(b =>
+            {
+                // Each User can have many UserClaims
+                b.HasMany(e => e.Claims)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(uc => uc.UserId)
+                    .IsRequired();
+
+                // Each User can have many UserLogins
+                b.HasMany(e => e.Logins)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(ul => ul.UserId)
+                    .IsRequired();
+
+                // Each User can have many UserTokens
+                b.HasMany(e => e.Tokens)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(ut => ut.UserId)
+                    .IsRequired();
+
+                // Each User can have many entries in the UserRole join table
+                b.HasMany(e => e.UserRoles)
+                    .WithOne(e => e.User)
+                    .HasForeignKey(ur => ur.UserId)
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity<ApplicationRole>(b =>
+            {
+                // Each Role can have many entries in the UserRole join table
+                b.HasMany(e => e.UserRoles)
+                    .WithOne(e => e.Role)
+                    .HasForeignKey(ur => ur.RoleId)
+                    .IsRequired();
+
+                // Each Role can have many associated RoleClaims
+                b.HasMany(e => e.RoleClaims)
+                    .WithOne(e => e.Role)
+                    .HasForeignKey(rc => rc.RoleId)
+                    .IsRequired();
+            });
+
+
+
+
+
+
+
+            //modelBuilder.Entity<ApplicationUser>(entity =>
+            //{
+            //    entity.ToTable(name: "User");
+
+            //});
+            //modelBuilder.Entity<IdentityRole>(entity =>
+            //{
+            //    entity.ToTable(name: "Role");
+            //});
+            //modelBuilder.Entity<ApplicationUserRole>(entity =>
+            //{
+            //    entity.ToTable(name: "UserRoles"); ;
+            //});
+            //modelBuilder.Entity<IdentityUserClaim<string>>(entity =>
+            //{
+            //    entity.ToTable("UserClaims");
+            //});
+            //modelBuilder.Entity<IdentityUserLogin<string>>(entity =>
+            //{
+            //    entity.ToTable("UserLogins");
+            //    //in case you chagned the TKey type  
+            //    //  entity.HasKey(key => new { key.ProviderKey, key.LoginProvider });         
+            //});
+            //modelBuilder.Entity<IdentityRoleClaim<string>>(entity =>
+            //{
+            //    entity.ToTable("RoleClaims");
+            //});
+            //modelBuilder.Entity<IdentityUserToken<string>>(entity =>
+            //{
+            //    entity.ToTable("UserTokens");
+            //    //in case you chagned the TKey type  
+            //    // entity.HasKey(key => new { key.UserId, key.LoginProvider, key.Name });  
+            //});
+
         }
 
 
-    
+
     }
 
 }

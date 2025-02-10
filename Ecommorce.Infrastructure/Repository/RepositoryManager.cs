@@ -19,7 +19,17 @@ namespace Ecommorce.Infrastructure.Repository
         private CarRepository _carRepository;
         private DriverRepository _driverRepository;
 
-          public RepositoryManager(ApplicationDbContext context) {
+        private ProductOptionRepository _productOptionRepository;
+        private ProductOptionValueRepository _productOptionValueRepository;
+        private ProductAttributeRepository _productAttributeRepository;
+        private ProductBrandRepository _productBrandRepository;
+
+        private ProductAttributeValueRepository _productAttributeValueRepository;
+        private ProductPublishRepository _productPublishRepository;
+        private ProductMediaRepository _productMediaRepository;
+        private ProductCategoryRepository _productCategoryRepository;
+
+        public RepositoryManager(ApplicationDbContext context) {
 
             _context = context;
         }
@@ -93,6 +103,88 @@ namespace Ecommorce.Infrastructure.Repository
                 if(_tokenRepository==null)
                     _tokenRepository=new TokenRepository(_context);
                 return _tokenRepository;
+            }
+        }
+
+        public IProductOptionRepository productOptionRepository
+        {
+            get
+            {
+                if(_productOptionRepository==null)
+                    _productOptionRepository=new ProductOptionRepository(_context);
+                return _productOptionRepository;
+            }
+        }
+
+        public IProductOptionValueRepository productOptionValueRepository
+        {
+            get
+            {
+                if (_productOptionValueRepository==null)
+                    _productOptionValueRepository=new ProductOptionValueRepository(_context);   
+                return _productOptionValueRepository;
+            }
+        }
+
+        public IProductAttributeRepository productAttributeRepository
+        {
+            get
+            {
+               if (_productAttributeRepository==null)
+                    _productAttributeRepository = new ProductAttributeRepository(_context);
+               return _productAttributeRepository;
+
+            }
+        }
+
+        public IProductBrandRepository productBrandRepository
+        {
+            get
+            {
+                if(_productBrandRepository==null)
+                    _productBrandRepository=new ProductBrandRepository(_context);
+                return _productBrandRepository;
+            }
+        }
+
+        public IProductAttributeValueRepository productAttributeValueRepository
+        {
+            get
+            {
+                if (_productAttributeValueRepository==null)
+                    _productAttributeValueRepository=new ProductAttributeValueRepository(_context);
+                return _productAttributeValueRepository;
+
+            }
+        }
+
+        public IProductPublishRepository productPublishRepository
+        {
+            get
+            {
+               if(_productPublishRepository==null)
+                    _productPublishRepository=new ProductPublishRepository(_context);
+               return _productPublishRepository;
+            }
+        }
+
+        public IProductMediaRepository productMediaRepository
+        {
+            get
+            {
+                if (_productMediaRepository==null)
+                    _productMediaRepository=new ProductMediaRepository(_context);
+                return _productMediaRepository;
+            }
+        }
+
+        public IProductCategoryRepository productCategoryRepository
+        {
+            get
+            {
+                if (_productCategoryRepository==null)
+                    _productCategoryRepository=new ProductCategoryRepository(_context);
+                return _productCategoryRepository;
             }
         }
     }
