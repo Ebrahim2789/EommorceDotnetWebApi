@@ -1,6 +1,9 @@
-﻿using Ecommorce.Application.ILogger;
+﻿using AutoMapper;
+using Ecommorce.Application.ILogger;
 using Ecommorce.Application.Repository;
+using Ecommorce.Model.DTO.Incoming;
 using Ecommorce.Model.ProductModels;
+using Ecommorce.Model.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,58 +12,116 @@ namespace Ecommorce.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductAttributeValuesController1 : ControllerBase
+    public class ProductAttributeValuesController : ControllerBase
     {
 
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManger _logger;
+        private readonly IMapper _mapper;
 
-        public ProductAttributeValuesController1(IRepositoryManager repository, ILoggerManger logger)
+        public ProductAttributeValuesController(IRepositoryManager repository, ILoggerManger logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet("attributevalues/{id}/option")]
-        public IEnumerable<string> GetProductAttributeValueByAttributeId()
+        public async Task<ActionResult<ApiResponse<IEnumerable<ProductAttributeValue>>>> GetProductAttributeValueByAttributeId()
         {
-            return new string[] { "value1", "value2" };
+            var productsbrand = await _repository.ProductAttributeValue.GetAllAsync();
+            var response = new ApiResponse<IEnumerable<ProductAttributeValue>>(productsbrand, true, "ProductAttribute retrieved successfully");
+            return Ok(response);
         }
 
 
         [HttpGet("{id}")]
-        public string GetProductAttributeValue(int id)
+        public async Task<ActionResult<ApiResponse<ProductAttributeValue>>> GetProductAttributeValue(int id)
         {
-            return "value";
+            var products = await _repository.ProductAttributeValue.GetByIdAsync(id);
+
+
+            var companiesDto = _mapper.Map<ProductAttributeValuesDTO>(products);
+
+
+
+            var response = new ApiResponse<ProductAttributeValuesDTO>(companiesDto, true, "ProductAttribute retrieved successfully");
+
+
+            return Ok(response);
         }
 
 
         [HttpPost]
-        public void AddProductAttributeValue([FromBody] ProductAttributeValuesDTO value)
+        public async Task<ActionResult<ApiResponse<IEnumerable<ProductAttributeValue>>>> AddProductAttributeValue([FromBody] ProductAttributeValuesDTO value)
         {
+            if (value == null)
+            {
+                _logger.LogError("ProductAttributeValue object sent from client is null.");
+
+                return BadRequest("ProductAttributeValue object is null");
+            }
+            var productBrandEntity = _mapper.Map<ProductAttributeValue>(value);
+
+            await _repository.ProductAttributeValue.AddAsync(productBrandEntity);
+
+
+            var productBrandReturn = _mapper.Map<ProductAttributeValuesDTO>(productBrandEntity);
+
+
+            var response = new ApiResponse<ProductAttributeValuesDTO>(productBrandReturn, true, "ProductAttributeValue added successfully");
+
+
+            return Ok(response);
         }
 
 
         [HttpPut("attributevalues/{id} ")]
-        public void EditProductAttributeValue(int id, [FromBody] ProductAttributeValuesDTO value)
+        public async Task<ActionResult<ApiResponse<ProductAttributeValue>>> EditProductAttributeValue(int id, [FromBody] ProductAttributeValuesDTO value)
         {
+            var products = await _repository.ProductAttributeValue.GetByIdAsync(id);
+
+            var productBrandEntity = _mapper.Map<ProductAttributeValue>(value);
+            productBrandEntity.Id = id;
+
+            if (products == null)
+            {
+                _logger.LogError("ProductAttributeValue object sent from client is null.");
+
+                return BadRequest("ProductAttributeValue object is null");
+
+            }
+
+
+            _repository.ProductAttributeValue.Update(productBrandEntity);
+
+
+            var productBrandReturn = _mapper.Map<ProductAttributeValuesDTO>(productBrandEntity);
+
+
+            var response = new ApiResponse<ProductAttributeValuesDTO>(productBrandReturn, true, "ProductAttribute Updated successfully");
+            return Ok(response);
         }
 
      
         [HttpDelete("attributevalues/{id} ")]
-        public void DeleteProductAttributeValue(int id)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteProductAttributeValue(int id)
         {
+            var products = await _repository.ProductAttributeValue.GetByIdAsync(id);
+
+            if (products == null)
+            {
+                _logger.LogError("ProductAttributeValue object sent from client is null.");
+
+                return BadRequest("ProductAttributeValue object is null");
+            }
+            _repository.ProductAttributeValue.Delete(products);
+
+            var response = new ApiResponse<bool>(true, true, "ProductAttributeValue deleted successfully");
+            return Ok(response);
         }
     }
 
-    public class ProductAttributeValuesDTO
-    {
 
-
-        public int AttributeId { get; set; }
-        public string Value { get; set; }
-        public string Description { get; set; }
-        public bool IsPublished { get; set; }
-    }
 
 }

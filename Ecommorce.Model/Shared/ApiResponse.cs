@@ -27,5 +27,7 @@ namespace Ecommorce.Model.Shared
             Message = message ?? (isSuccess ? "Operation successful" : "Operation failed");
             Errors = errors ?? new List<string>();
         }
+
+
     }
 }

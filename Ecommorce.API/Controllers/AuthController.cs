@@ -60,7 +60,8 @@ namespace Ecommorce.API.Controllers
 
             var accessToken = _authService.BuildToken(claiems);
             var refreshToken = _authService.GenretRefreshToken();
-
+            _tokenStorage.SetAccessToken(accessToken);
+            _tokenStorage.SetRefreshToken(refreshToken);
 
             await _repository.Token.SaveRefreshToken(model.UserName, refreshToken);
 

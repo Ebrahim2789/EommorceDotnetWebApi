@@ -23,8 +23,26 @@ namespace Ecommorce.API.Controllers
             _logger = logger;
         }
 
+        [HttpGet("customer")]
 
-        
+        public async Task<ActionResult<ApiResponse<IEnumerable<Product>>>> CoustomerGetProductList(string openid)
+        {
+            var products = await _repository.Product.GetAllAsync();
+            var response = new ApiResponse<IEnumerable<Product>>(products, true, "Products retrieved successfully");
+            return Ok(response);
+        }
+
+        [HttpGet("merchant")]
+
+        public async Task<ActionResult<ApiResponse<IEnumerable<Product>>>> MerchantGetProductList(string openid)
+        {
+            var products = await _repository.Product.GetAllAsync();
+            var response = new ApiResponse<IEnumerable<Product>>(products, true, "Products retrieved successfully");
+            return Ok(response);
+        }
+
+
+
         [HttpGet("grid")]
         public async Task<ActionResult<ApiResponse<IEnumerable<Product>>>> GetProductGrid()
         {
@@ -129,11 +147,5 @@ namespace Ecommorce.API.Controllers
     }
 
 
-    public class PublishProductDTO
-    {
-        public int ProductId { get; set; }
-        public bool IsPublished { get; set; }
-        public DateTime PublishTimeFrom { get; set; }
-        public DateTime PublishTimeTo { get; set; }
-    }
+
 }

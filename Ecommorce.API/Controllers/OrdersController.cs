@@ -34,7 +34,7 @@ namespace Ecommorce.API.Controllers
         }
 
         [HttpPost("customer-orders/product ")]
-        public void OrderByProduct([FromBody] ProductCategoryDTO value)
+        public void OrderByProduct([FromBody] OrderDTO value)
         {
 
 
@@ -45,7 +45,7 @@ namespace Ecommorce.API.Controllers
         
 
      [HttpPost("customer-orders/{id}/cancel ")]
-        public void CancelOrder([FromBody] ProductCategoryDTO value)
+        public void CancelOrder([FromBody] OrderDTO value)
         {
 
             //orderId Int
@@ -65,7 +65,7 @@ namespace Ecommorce.API.Controllers
         
 
         [HttpPost("customer-orders/cart ")]
-        public void OrderByCart([FromBody] ProductCategoryDTO value)
+        public void OrderByCart([FromBody] OrderDTO value)
         {
 
             //userAddressId int
@@ -94,7 +94,7 @@ namespace Ecommorce.API.Controllers
         }
 
         [HttpPut("customer-orders/{id}")]
-        public void EditOrder(int id, [FromBody] ProductCategoryDTO value)
+        public void EditOrder(int id, [FromBody] OrderDTO value)
         {
 
             //Id Int
@@ -107,7 +107,7 @@ namespace Ecommorce.API.Controllers
 
 
         [HttpPost("merchant-orders/{id}/shipment ")]
-        public void Shipment([FromBody] ProductCategoryDTO value)
+        public void Shipment([FromBody] OrderDTO value)
         {
 
         //            orderId Int
@@ -118,7 +118,7 @@ namespace Ecommorce.API.Controllers
 
         }
         [HttpPost("merchant-orders/{id}/hangup ")]
-        public void HangUpOrder([FromBody] ProductCategoryDTO value)
+        public void HangUpOrder([FromBody] OrderDTO value)
         {
 
             //orderId Int
@@ -132,7 +132,7 @@ namespace Ecommorce.API.Controllers
 
 
         [HttpPut("merchant-orders/{id}/complete")]
-        public void EditOrderm(int id, [FromBody] ProductCategoryDTO value)
+        public void EditOrderm(int id, [FromBody] OrderDTO value)
         {
 
             //Id Int
@@ -161,7 +161,7 @@ namespace Ecommorce.API.Controllers
 
 
 
-    public class ProductCategoryDTO
+    public class OrderDTO
     {
 
         //userAddressId Int

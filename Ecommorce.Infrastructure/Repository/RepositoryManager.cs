@@ -105,8 +105,9 @@ namespace Ecommorce.Infrastructure.Repository
                 return _tokenRepository;
             }
         }
-
-        public IProductOptionRepository productOptionRepository
+        //      
+        //  ProductCategory
+        public IProductOptionRepository ProductOption
         {
             get
             {
@@ -116,7 +117,7 @@ namespace Ecommorce.Infrastructure.Repository
             }
         }
 
-        public IProductOptionValueRepository productOptionValueRepository
+        public IProductOptionValueRepository ProductOptionValue
         {
             get
             {
@@ -126,7 +127,7 @@ namespace Ecommorce.Infrastructure.Repository
             }
         }
 
-        public IProductAttributeRepository productAttributeRepository
+        public IProductAttributeRepository ProductAttribute
         {
             get
             {
@@ -137,7 +138,7 @@ namespace Ecommorce.Infrastructure.Repository
             }
         }
 
-        public IProductBrandRepository productBrandRepository
+        public IProductBrandRepository ProductBrand
         {
             get
             {
@@ -147,7 +148,7 @@ namespace Ecommorce.Infrastructure.Repository
             }
         }
 
-        public IProductAttributeValueRepository productAttributeValueRepository
+        public IProductAttributeValueRepository ProductAttributeValue
         {
             get
             {
@@ -158,7 +159,7 @@ namespace Ecommorce.Infrastructure.Repository
             }
         }
 
-        public IProductPublishRepository productPublishRepository
+        public IProductPublishRepository ProductPublish
         {
             get
             {
@@ -168,7 +169,7 @@ namespace Ecommorce.Infrastructure.Repository
             }
         }
 
-        public IProductMediaRepository productMediaRepository
+        public IProductMediaRepository ProductMedia
         {
             get
             {
@@ -178,7 +179,7 @@ namespace Ecommorce.Infrastructure.Repository
             }
         }
 
-        public IProductCategoryRepository productCategoryRepository
+        public IProductCategoryRepository ProductCategory
         {
             get
             {
