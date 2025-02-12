@@ -21184,3 +21184,28 @@
 2025-02-11 20:07:16.8229 Trace FileTarget(Name=logfile) has 2 layouts
 2025-02-11 20:07:16.8229 Trace FileTarget(Name=logfile): Using appenderFactory: NLog.Internal.FileAppenders.SingleProcessFileAppender+Factory
 2025-02-11 20:07:16.8229 Info Configuration initialized.
+2025-02-11 21:09:31.2312 Info AppDomain Shutting down. LogFactory closing...
+2025-02-11 21:09:31.8116 Debug Stop watching file-filter 'Nlogs.config' in directory: C:\Users\Admin\Desktop\Dotnet\Project\Ecommorce\Ecommorce.API
+2025-02-11 21:09:31.8326 Trace Flushing all 1 targets...
+2025-02-11 21:09:31.8800 Trace ForEachItemInParallel() 1 items
+2025-02-11 21:09:31.9269 Trace FileTarget(Name=logfile): FlushAsync
+2025-02-11 21:09:31.9269 Trace Continuation invoked: 
+2025-02-11 21:09:31.9470 Trace Parallel task completed. 0 items remaining
+2025-02-11 21:09:31.9541 Debug Flush completed
+2025-02-11 21:09:31.9541 Trace FileTarget(Name=logfile): FlushAsync Done
+2025-02-11 21:09:31.9541 Debug Closing logging configuration...
+2025-02-11 21:09:32.0077 Trace Closing FileTarget(Name=logfile)
+2025-02-11 21:09:32.0077 Debug FileTarget(Name=logfile): Closing...
+2025-02-11 21:09:32.0564 Debug FileTarget(Name=logfile): Closed.
+2025-02-11 21:09:32.0564 Trace Closing C:\Users\Admin\Desktop\Dotnet\Project\Ecommorce/Project\logs\${shortdate}_logfile.txt
+2025-02-11 21:09:32.1644 Trace Closing Layout Renderer: ${literal}
+2025-02-11 21:09:32.1644 Trace Closing Layout Renderer: ${shortdate}
+2025-02-11 21:09:32.1644 Trace Closing Layout Renderer: ${literal}
+2025-02-11 21:09:32.1644 Trace Closing ${longdate} ${level:uppercase=true} ${message}
+2025-02-11 21:09:32.1644 Trace Closing Layout Renderer: ${longdate}
+2025-02-11 21:09:32.1644 Trace Closing Layout Renderer: ${literal}
+2025-02-11 21:09:32.1644 Trace Closing Layout Renderer: ${level}
+2025-02-11 21:09:32.1644 Trace Closing Layout Renderer: ${literal}
+2025-02-11 21:09:32.1795 Trace Closing Layout Renderer: ${message}
+2025-02-11 21:09:32.1795 Debug Finished closing logging configuration.
+2025-02-11 21:09:32.1795 Info LogFactory has been closed.
