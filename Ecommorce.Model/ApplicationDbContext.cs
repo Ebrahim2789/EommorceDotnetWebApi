@@ -5,7 +5,6 @@ using Ecommorce.Model.IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using Ecommorce.Model.EntityConfiguration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using System.Reflection.Emit;
 using Ecommorce.Model.ProductModels;
 using Ecommorce.Model.NewFolder;
 
@@ -25,8 +24,6 @@ namespace Ecommorce.Model
         public DbSet<Driver> Drivers { get; set; }
         public DbSet<CarDriver> CarsToDrivers { get; set; }
 
-
-
         public DbSet<UserFollower> UserFollowers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -42,8 +39,6 @@ namespace Ecommorce.Model
         //public DbSet<ApplicationUserLogin> ApplicationUserLogin { get; set; }
         //public DbSet<ApplicationRoleClaim> ApplicationRoleClaim { get; set; }
         //public DbSet<ApplicationUserToken> ApplicationUserToken { get; set; }
-
-
         public DbSet<CoreMenu> coreMenus { get; set; }
         public DbSet<CoreRoleMenu> coreRoleMenus { get; set; }
 
@@ -62,7 +57,6 @@ namespace Ecommorce.Model
         public DbSet<ProductOptionData> ProductOptionDatas { get; set; }
 
         public DbSet<ProductOptionValue> ProductOptionValues { get; set; }
-
         public DbSet<ProductAttribute> ProductAttributes { get; set; }
         public DbSet<ProductAttributeData> ProductAttributeDatas { get; set; }
         public DbSet<ProductAttributeValue> ProductAttributeValues { get; set; }

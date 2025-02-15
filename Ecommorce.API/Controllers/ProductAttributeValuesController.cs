@@ -26,7 +26,7 @@ namespace Ecommorce.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("attributevalues/{id}/option")]
+        [HttpGet]
         public async Task<ActionResult<ApiResponse<IEnumerable<ProductAttributeValue>>>> GetProductAttributeValueByAttributeId()
         {
             var productsbrand = await _repository.ProductAttributeValue.GetAllAsync();
@@ -35,7 +35,7 @@ namespace Ecommorce.API.Controllers
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("attributevalues/{id}")]
         public async Task<ActionResult<ApiResponse<ProductAttributeValue>>> GetProductAttributeValue(int id)
         {
             var products = await _repository.ProductAttributeValue.GetByIdAsync(id);
@@ -82,7 +82,7 @@ namespace Ecommorce.API.Controllers
             var products = await _repository.ProductAttributeValue.GetByIdAsync(id);
 
             var productBrandEntity = _mapper.Map<ProductAttributeValue>(value);
-            productBrandEntity.Id = id;
+          
 
             if (products == null)
             {

@@ -17,7 +17,9 @@ namespace Ecommorce.Model.Profiles
 
             CreateMap<ProductBrandDTO, ProductBrand>();
 
-            CreateMap<ProductBrand, ProductBrandDTO>();
+            //CreateMap<ProductBrand, ProductBrandDTO>();
+            CreateMap<ProductBrandDTO, ProductBrand>().ReverseMap();
+        
 
             CreateMap<ProductCategoryDTO, ProductCategory>();
             CreateMap<ProductCategory, ProductCategoryDTO>();

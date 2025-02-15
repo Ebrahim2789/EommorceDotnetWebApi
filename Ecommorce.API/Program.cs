@@ -14,7 +14,8 @@ using Ecommorce.Application.ILogger;
 using Ecommorce.Infrastructure.Logger;
 using Ecommorce.Model.Profiles;
 using Ecommorce.Infrastructure.Extension;
-using Ecommorce.API;
+using Ecommorce.API.Extentions;
+using Ecommorce.API.Extentions.ActionFilters;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,16 +47,31 @@ builder.Services.AddScoped<ILoggerManger, LoggerManger>();
 
 // Add services to the container.
 builder.Services.AddAutoMapper(typeof(DriverProfile));
+
+builder.Services.AddAutoMapper(typeof(ProductProfile));
 //This is forall automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddControllers()
+builder.Services.AddControllers(configs =>
+{
+    configs.RespectBrowserAcceptHeader = true;
+    //configs.Filters.Add(new GlobalFilterExample());
+
+    //configs.ReturnHttpNotAcceptable = true;
+
+})
+    
     .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-    });
+{
+    options.JsonSerializerOptions.ReferenceHandler =
+    System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+
+}).AddNewtonsoftJson()
+ .AddXmlDataContractSerializerFormatters()
+ .AddMvcOptions(config => config.OutputFormatters.Add(new CsvOutputFormatter()));
+builder.Services.AddScoped<GlobalFilterExample>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -110,10 +126,10 @@ var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 
 
@@ -123,11 +139,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseRouting();
-
-
 app.ConfigureExceptionHandler();
-
-
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -137,13 +149,9 @@ app.UseDefaultFiles(); // index.html, default.html, and so on
 app.UseStaticFiles();
 
 app.MapRazorPages();
-
 app.MapGet("/hello", () => "Hello World!");
 
 //app.MapControllerRoute(name: "default",pattern: "{controller=Cars1}/{action=Index}/{id?}").WithStaticAssets();
-
-
-
 
 app.Run();
 

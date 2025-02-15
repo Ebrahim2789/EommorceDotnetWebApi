@@ -8,6 +8,8 @@ namespace Ecommorce.Model.ProductModels
         [Required]
         public string Name { set; get; }
         [Required]
+     
+
         public string Code { get; set; }
         [Required]
         public string Description { get; set; }

@@ -17,6 +17,10 @@
 
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.1" />
 
+		<PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="9.0.2" />
+
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.2" />
+
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.1" />
 		<PackageReference Include="Nlog.Extensions.Logging" Version="5.3.15" />
 		
@@ -44,7 +48,6 @@
     <ProjectReference Include="..\Ecommorce.Model\Ecommorce.Model.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="Migrations\" />
     <Folder Include="Models\" />
     <Folder Include="Pages\Product\" />

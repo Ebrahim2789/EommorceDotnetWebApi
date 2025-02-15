@@ -29,5 +29,7 @@ namespace Ecommorce.Application.Repository
         IProductMediaRepository ProductMedia {get;}
         IProductCategoryRepository ProductCategory {get;}
 
+        void Save();
+
     }
 }

@@ -8,10 +8,6 @@ namespace Ecommorce.API
     {
         private readonly ApplicationDbContext context;
 
-        public Demo()
-        {
-        }
-
         public Demo(ApplicationDbContext context)
         {
             this.context = context;
@@ -28,7 +24,6 @@ namespace Ecommorce.API
             context.SaveChanges();
             Console.WriteLine($"State of the {newMake.Name} is {context.Entry(newMake).State}");
         }
-
 
         public  void LoadMakeAndCarData()
         {
@@ -61,7 +56,6 @@ namespace Ecommorce.API
             context.Cars.AddRange(inventory);
             context.SaveChanges();
         }
-
 
         public void ManyToMany()
         {

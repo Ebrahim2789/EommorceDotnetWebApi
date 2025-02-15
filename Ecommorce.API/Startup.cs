@@ -14,6 +14,7 @@ using System.Text;
 using Ecommorce.Application.ILogger;
 using Ecommorce.Infrastructure.Logger;
 using Ecommorce.Infrastructure.Extension;
+using Ecommorce.API.Extentions;
 
 namespace Ecommorce.API
 {
@@ -26,8 +27,10 @@ namespace Ecommorce.API
         {
             configuration = configuration;
         }
+        //public static IMvcBuilder AddCustomCSVFormatter(this IMvcBuilder builder) =>
+        //     builder.AddMvcOptions(config => config.OutputFormatters.Add(new
+        //    CsvOutputFormatter()));
 
-     
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>

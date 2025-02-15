@@ -188,5 +188,8 @@ namespace Ecommorce.Infrastructure.Repository
                 return _productCategoryRepository;
             }
         }
+
+        public void Save()=> _context.SaveChanges();
+
     }
 }

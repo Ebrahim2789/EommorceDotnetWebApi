@@ -85,7 +85,7 @@ namespace Ecommorce.API.Controllers
             var products = await _repository.ProductOption.GetByIdAsync(id);
 
             var productBrandEntity = _mapper.Map<ProductOption>(value);
-            productBrandEntity.Id = id;
+
 
             if (products == null)
             {

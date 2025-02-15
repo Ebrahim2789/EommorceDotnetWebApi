@@ -1,5 +1,6 @@
 ﻿using Ecommorce.Application.Repository;
 using Ecommorce.Model;
+using Ecommorce.Model.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq.Expressions;
@@ -48,10 +49,13 @@ namespace Ecommorce.Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public void Update(T entity)
+        public async void Update(T entity)
         {
-            _dbSet.Update(entity);
-            _context.SaveChanges();
+
+            _dbSet.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            //_dbSet.Update(entity);
+          await  _context.SaveChangesAsync();
         }
 
         public void Delete(T entity)
