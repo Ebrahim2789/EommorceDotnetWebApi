@@ -19,16 +19,18 @@ namespace Ecommorce.Application.Repository
 
         IProductOptionRepository ProductOption {get;}
         IProductOptionValueRepository ProductOptionValue {get;}
+        IProductOptionDataRepository ProductOptionData {get;}
         IProductAttributeRepository ProductAttribute {get;}
         IProductBrandRepository ProductBrand {get;}
 
 
-
+        IProductAttributeDataRepository ProductAttributeData {get;}
         IProductAttributeValueRepository ProductAttributeValue {get;}
-        IProductPublishRepository ProductPublish {get;}
+        IPublishRepository Publish {get; }
         IProductMediaRepository ProductMedia {get;}
+        IMediaRepository Media { get; }
         IProductCategoryRepository ProductCategory {get;}
-
+        ICategoryRepository Category { get; }
         void Save();
 
     }

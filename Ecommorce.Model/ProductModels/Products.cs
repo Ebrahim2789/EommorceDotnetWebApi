@@ -1,4 +1,5 @@
 ﻿using Ecommorce.Model.Model;
+using Ecommorce.Model.OrderModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,13 +15,17 @@ namespace Ecommorce.Model.ProductModels
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        [Required]
-        public string Code { get; set; }
-        public string ShortDescription { get; set; }
+        [Required(ErrorMessage = "Name is a required field.")]
+        [MaxLength(20, ErrorMessage = "Maximum length for the Name is 20 characters.")]
+
+        public required string Name { get; set; }
+        [Required(ErrorMessage = "Description is a required field.")]
+        public required string Description { get; set; }
+        [Required(ErrorMessage = "Code is a required field.")]
+        public required string Code { get; set; }
+        public string? ShortDescription { get; set; }
         public decimal Price { get; set; }
-        public string LinePrice { get; set; }
+        public string? LinePrice { get; set; }
         [Required]
         public decimal CostPrice { get; set; }
         public bool StockEnable { get; set; }
@@ -28,41 +33,29 @@ namespace Ecommorce.Model.ProductModels
         public int OrderMinimumQuantity { get; set; }
         public int OrderMaximumQuantity { get; set; }
         [Required]
-        public string ThumbnailImageUrl { get; set; }
-        public string VideoUrl { get; set; }
-        [Required]
+        public string? ThumbnailImageUrl { get; set; }
+        public string? VideoUrl { get; set; }
+        [Required(ErrorMessage = "IsPublished is a required field.")]
         public bool IsPublished { get; set; }
-        public string SKU { get; set; }
-        public string Tags { get; set; }
-        //public int ParentId { get; set; }
-        //[ForeignKey(nameof(ParentId))]
-        //public Product_Product Parent { get; set; }
+        public string ? SKU { get; set; }
+        public string? Tags { get; set; }
 
-
+        //public int VariationsId { get; set; }
+        //public virtual ProductVariation? Variations { get; set; }
         public int BrandId { get; set; }
-        [ForeignKey(nameof(BrandId))]
-        public virtual ProductBrand Brand { get; set; }
-
-        public int CategroyId { get; set; }
-        [ForeignKey(nameof(CategroyId))]
-        public virtual ProductCategory Categroy { get; set; }
-
+        public virtual  ProductBrand? Brand { get; set; }
         public int PublisherId { get; set; }
-        [ForeignKey(nameof(PublisherId))]
-        public virtual ProductPublish Publisher { get; set; }
+        public virtual  Publisher? Publisher { get; set; }
 
-        public ICollection<ProductMedia> Medias { get; set; }
-
-
-     
-        public virtual ICollection<ProductOption> ProductOptions { get; set; }
-        public virtual ICollection<ProductOptionValue> ProductOptionValues { get; set; }
-        public ICollection<ProductAttribute> Attributes{ get; set; }
-
-        public ICollection<ProductAttributeValue> AttributesValues { get; set; }
+ 
+        public virtual  ICollection<ProductCategory>? ProductCategories { get; set; }
+        public virtual  ICollection<ProductMedia>? ProductMedia { get; set; }
+        public virtual  ICollection<ProductOption>? ProductOptions { get; set; }
+        public virtual  ICollection<ProductAttribute>? ProductAttributes { get; set; }
 
 
-        public virtual ICollection<OrderItem> OrderDetails { get; set; }
+        public virtual ICollection<OrderItem>? OrderDetails { get; set; }
+
 
     }
 

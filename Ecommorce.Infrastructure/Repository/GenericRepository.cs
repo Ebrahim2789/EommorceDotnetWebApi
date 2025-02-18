@@ -1,8 +1,12 @@
 ﻿using Ecommorce.Application.Repository;
 using Ecommorce.Model;
 using Ecommorce.Model.Model;
+using Ecommorce.Model.ProductModels;
+using Ecommorce.Model.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.Design;
+using System.Linq;
 using System.Linq.Expressions;
 
 
@@ -55,7 +59,7 @@ namespace Ecommorce.Infrastructure.Repository
             _dbSet.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
             //_dbSet.Update(entity);
-          await  _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public void Delete(T entity)
@@ -73,6 +77,61 @@ namespace Ecommorce.Infrastructure.Repository
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> predicate)
         {
             return _dbSet.Where(predicate);
+        }
+
+
+
+        public async Task<(IEnumerable<T> Data, int TotalCount)> GetGridAsync(RequestParameters requestParameters, Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "")
+        {
+            IQueryable<T> query = _dbSet;
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+            foreach (var entity in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(entity);
+            }
+            int totalCount = await query.CountAsync();
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+            var data = await query.Skip((requestParameters.PageNumber - 1) * requestParameters.PageSize).Take(requestParameters.PageSize).ToListAsync();
+
+            return (data, totalCount);
+        }
+
+        public IQueryable<T> FindByConditions(Expression<Func<T, bool>> predicate)
+        {
+
+
+            IQueryable<T> query = _dbSet;
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            return query;
+
+        }
+
+        public IQueryable<T> GetGridIncluding(Expression<Func<T, bool>> pradicte , params Expression<Func<T, bool>>[] includes)
+        {
+
+            IQueryable<T> query = _dbSet;
+            if (pradicte != null)
+            {
+                query = query.Where(pradicte);
+            }
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return query;
         }
     }
 }

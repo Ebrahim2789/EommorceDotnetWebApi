@@ -16,7 +16,7 @@ using Ecommorce.Model.Profiles;
 using Ecommorce.Infrastructure.Extension;
 using Ecommorce.API.Extentions;
 using Ecommorce.API.Extentions.ActionFilters;
-
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,8 +33,6 @@ LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentD
 //startup.Configure(app, app.Environment); // Configure the HTTP request pipeline.
 
 //app.Run();
-
-
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(opts =>
@@ -62,16 +60,20 @@ builder.Services.AddControllers(configs =>
     //configs.ReturnHttpNotAcceptable = true;
 
 })
-    
+
     .AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler =
     System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 
-}).AddNewtonsoftJson()
- .AddXmlDataContractSerializerFormatters()
- .AddMvcOptions(config => config.OutputFormatters.Add(new CsvOutputFormatter()));
-builder.Services.AddScoped<GlobalFilterExample>();
+});
+    
+ //   .AddNewtonsoftJson()
+ //.AddXmlDataContractSerializerFormatters()
+ //.AddMvcOptions(config => config.OutputFormatters.Add(new CsvOutputFormatter()));
+
+
+//builder.Services.AddScoped<GlobalFilterExample>();
 
 builder.Services.AddAuthentication(options =>
 {

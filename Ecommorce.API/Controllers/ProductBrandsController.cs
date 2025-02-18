@@ -14,7 +14,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Ecommorce.API.Controllers
 {
-    [ServiceFilter(typeof(GlobalFilterExample))]
+    //[ServiceFilter(typeof(GlobalFilterExample))]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductBrandsController : ControllerBase
@@ -42,7 +42,7 @@ namespace Ecommorce.API.Controllers
 
 
         [HttpGet("brands/{id}")]
-        [ServiceFilter(typeof(GlobalFilterExample))]
+        //[ServiceFilter(typeof(GlobalFilterExample))]
         public async Task<ActionResult<ApiResponse<ProductBrand>>> GetProductBrand(int id)
         {
             var products = await _repository.ProductBrand.GetByIdAsync(id);
@@ -58,8 +58,8 @@ namespace Ecommorce.API.Controllers
 
 
             var response = new ApiResponse<ProductBrandDTO>(companiesDto, true, "ProductBrand retrieved successfully");
-          
-            
+
+
             return Ok(response);
         }
 
@@ -76,15 +76,15 @@ namespace Ecommorce.API.Controllers
             }
             var productBrandEntity = _mapper.Map<ProductBrand>(value);
 
-               await  _repository.ProductBrand.AddAsync(productBrandEntity);
+            await _repository.ProductBrand.AddAsync(productBrandEntity);
 
-           
+
             var productBrandReturn = _mapper.Map<ProductBrandDTO>(productBrandEntity);
 
-        
+
             var response = new ApiResponse<ProductBrandDTO>(productBrandReturn, true, "Products added successfully");
-           
-            
+
+
             return Ok(response);
 
 
@@ -113,18 +113,18 @@ namespace Ecommorce.API.Controllers
 
 
         [HttpPut("updatebrands/{id}")]
-        public  IActionResult UpdateProductBrandForProduct(int productID, int id, [FromBody] ProductBrandDTO productBrand)
+        public IActionResult UpdateProductBrandForProduct(int productID, int id, [FromBody] ProductBrandDTO productBrand)
         {
             if (productBrand == null)
             {
                 _logger.LogError("ProductBrandDTO object sent from client is null.");
                 return BadRequest("ProductBrandDTO object is null");
             }
-            var product =   _repository.ProductBrand.GetByIdAsync(productID);
+            var product = _repository.ProductBrand.GetByIdAsync(productID);
             if (product == null)
             {
                 _logger.LogInfo($"product with id: {productID} doesn't exist in the  database.");
-            return NotFound();
+                return NotFound();
             }
             var productBrandEntity = _repository.ProductBrand.GetByIdAsync(productID);
             if (productBrandEntity == null)
@@ -144,20 +144,20 @@ namespace Ecommorce.API.Controllers
 
 
         [HttpPatch("{id}")]
-        public IActionResult PartiallyUpdateProductBrandForProduct(int productID, int id,[FromBody] JsonPatchDocument<ProductBrandDTO> patchDoc)
+        public IActionResult PartiallyUpdateProductBrandForProduct(int productID, int id, [FromBody] JsonPatchDocument<ProductBrandDTO> patchDoc)
         {
             if (patchDoc == null)
             {
 
-               
-            _logger.LogError("patchDoc object sent from client is null.");
+
+                _logger.LogError("patchDoc object sent from client is null.");
                 return BadRequest("patchDoc object is null");
             }
             var product = _repository.ProductBrand.GetByIdAsync(productID);
             if (product == null)
             {
                 _logger.LogInfo($"product with id: {productID} doesn't exist in the   database.");
-            return NotFound();
+                return NotFound();
             }
             var productBrandEntity = _repository.ProductBrand.GetByIdAsync(productID);
             if (productBrandEntity == null)
@@ -182,7 +182,7 @@ namespace Ecommorce.API.Controllers
         {
             var products = await _repository.ProductBrand.GetByIdAsync(id);
 
-            if (products==null)
+            if (products == null)
             {
                 _logger.LogError("ProductBrandDTO object sent from client is null.");
 
@@ -202,7 +202,7 @@ namespace Ecommorce.API.Controllers
             return Ok(response);
         }
 
- 
+
         [HttpDelete("{id}")]
 
         public async Task<ActionResult<ApiResponse<bool>>> DeleteProductBrand(int id)

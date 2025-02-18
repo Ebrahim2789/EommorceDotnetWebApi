@@ -35,7 +35,7 @@ namespace Ecommorce.API.Controllers
             return Ok(response);
         }
 
- 
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ApiResponse<ProductOptionValue>>> GetProductOptionValue(int id)
         {
@@ -50,7 +50,7 @@ namespace Ecommorce.API.Controllers
             return Ok(response);
         }
 
- 
+
         [HttpPost]
         public async Task<ActionResult<ApiResponse<IEnumerable<ProductOptionValue>>>> AddProductOptionValue([FromBody] ProductOptionValueDTO value)
         {
@@ -74,14 +74,14 @@ namespace Ecommorce.API.Controllers
             return Ok(response);
         }
 
-  
+
         [HttpPut("optionvalues/{id} ")]
         public async Task<ActionResult<ApiResponse<ProductOptionValue>>> EditProductOptionValue(int id, [FromBody] ProductOptionValueDTO value)
         {
             var products = await _repository.ProductOptionValue.GetByIdAsync(id);
 
             var productBrandEntity = _mapper.Map<ProductOptionValue>(value);
-       
+
 
             if (products == null)
             {
@@ -121,5 +121,5 @@ namespace Ecommorce.API.Controllers
         }
     }
 
- 
+
 }

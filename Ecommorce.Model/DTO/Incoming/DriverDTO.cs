@@ -8,8 +8,8 @@ namespace Ecommorce.Model.DTO.Incoming
 {
     public class DriverDTO
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public required string FirstName { get; set; }
+        public required string LastName { get; set; }
         public int DriverNumber { get; set; }
         public int WorldChampionships { get; set; }
     }

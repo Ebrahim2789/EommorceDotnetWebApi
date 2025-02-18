@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Ecommorce.Model;
+
 using Ecommorce.Model.Model;
 using Ecommorce.Model.DTO.Incoming;
-using AutoMapper;
 using Ecommorce.Application.ILogger;
 using Ecommorce.Model.DTO.Outgoing;
-using Ecommorce.Application.IRepository;
 using Ecommorce.Application.Repository;
+using Ecommorce.Model;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ecommorce.API.Controllers
 {

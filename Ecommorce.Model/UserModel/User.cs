@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Ecommorce.Model.UserModel
@@ -15,10 +16,10 @@ namespace Ecommorce.Model.UserModel
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string UserName { get; set; }
-        public string UserOpenId { get; set; }
+        public required string Email { get; set; }
+        public required string Password { get; set; }
+        public required string UserName { get; set; }
+        public required string UserOpenId { get; set; }
         public string? PhoneNumber { get; set; }
         public string? AvatarUrl { get; set; }
         public DateTime LastLoginOn { get; set; } = DateTime.Now;
@@ -30,8 +31,9 @@ namespace Ecommorce.Model.UserModel
         //[InverseProperty(nameof(UserFollower.FollowingId))]
         public ICollection<UserFollower>? Following { get; set; } = new List<UserFollower>();
 
-        [InverseProperty(nameof(UserRole.UserRoleName))]
-        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+        [InverseProperty(nameof(UserRole.UserRoles))]
+      
+        public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 
     }
 }

@@ -9,7 +9,7 @@ namespace Ecommorce.Model.DTO.Outgoing
     public class IDriverDto
     {
         public Guid Id { get; set; }
-        public string FullName { get; set; }
+        public required string FullName { get; set; }
         public int DriverNumber { get; set; }
         public int WorldChampionships { get; set; }
     }

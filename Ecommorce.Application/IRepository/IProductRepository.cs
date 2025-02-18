@@ -5,21 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using Ecommorce.Application.Repository;
 using Ecommorce.Model.ProductModels;
+using Ecommorce.Model.RequestFeatures;
 
 namespace Ecommorce.Application.IRepository
 {
-    public interface IProductRepository :IGenericRepository<Product>
+    public interface IProductRepository : IGenericRepository<Product>
     {
+
+        //Task<IEnumerable<Product>> GetGridAsync(int id, ProductParameters productParameters);
+        Task<PagedList<Product>> GetProductsAsync(int id, ProductParameters productParameters, bool trackChanges);
+
     }
-
-    //ProductOption ProductOptionValue ProductAttribute ProductAttributeValue
-    //ProductPublish ProductMedia ProductBrand ProductCategory
-
 
     public interface IProductOptionRepository : IGenericRepository<ProductOption>
     {
     }
     public interface IProductOptionValueRepository : IGenericRepository<ProductOptionValue>
+    {
+    }
+    public interface IProductOptionDataRepository : IGenericRepository<ProductOptionData>
     {
     }
     public interface IProductAttributeRepository : IGenericRepository<ProductAttribute>
@@ -28,10 +32,18 @@ namespace Ecommorce.Application.IRepository
     public interface IProductAttributeValueRepository : IGenericRepository<ProductAttributeValue>
     {
     }
-    public interface IProductPublishRepository : IGenericRepository<ProductPublish>
+
+    public interface IProductAttributeDataRepository : IGenericRepository<ProductAttributeData>
+    {
+    }
+    public interface IPublishRepository : IGenericRepository<Publisher>
     {
     }
     public interface IProductMediaRepository : IGenericRepository<ProductMedia>
+    {
+    }
+
+    public interface IMediaRepository : IGenericRepository<Media>
     {
     }
     public interface IProductBrandRepository : IGenericRepository<ProductBrand>
@@ -40,4 +52,12 @@ namespace Ecommorce.Application.IRepository
     public interface IProductCategoryRepository : IGenericRepository<ProductCategory>
     {
     }
+
+    public interface ICategoryRepository : IGenericRepository<Category>
+    {
+    }
 }
+
+
+
+

@@ -12,10 +12,10 @@ namespace Ecommorce.Model.NewFolder
     {
         public int Id { get; set; }
         public int RoleId { get; set; }
-        public virtual Role Role { get; set; }
+        public virtual  Role Role { get; set; }
         public int MenuId { get; set; }
 
-        public virtual CoreMenu Menu { get; set; }
+        public virtual  CoreMenu Menu { get; set; }
 
     }
 }

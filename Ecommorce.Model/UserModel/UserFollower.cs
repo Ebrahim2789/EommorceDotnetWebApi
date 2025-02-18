@@ -13,7 +13,7 @@ namespace Ecommorce.Model.UserModel
 
         public int FollowerId { get; set; }
         //[ForeignKey(nameof(FollowerId))]
-        public User Follower { get; set; }
+        public  User? Follower { get; set; }
 
         public int? FollowingId { get; set; }
         //[ForeignKey(nameof(FollowingId))]

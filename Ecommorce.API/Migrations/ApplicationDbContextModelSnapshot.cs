@@ -17,58 +17,24 @@ namespace Ecommorce.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Ecommorce.Model.IdentityModel.RoleIdentity", b =>
+            modelBuilder.Entity("Ecommorce.Model.IdentityModel.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Ecommorce.Model.IdentityModel.UsersIdentity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -92,19 +58,19 @@ namespace Ecommorce.API.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -126,6 +92,23 @@ namespace Ecommorce.API.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Ecommorce.Model.IdentityModel.ApplicationUserRole", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RoleId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
             modelBuilder.Entity("Ecommorce.Model.Model.Car", b =>
                 {
                     b.Property<int>("Id")
@@ -136,14 +119,14 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("Color")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Display")
                         .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
                         .HasComputedColumnSql("[PetName] + ' (' + [Color] + ')'", true);
 
                     b.Property<bool>("IsDrivable")
@@ -156,8 +139,8 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("PetName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<byte[]>("TimeStamp")
                         .IsConcurrencyToken()
@@ -219,13 +202,13 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -254,8 +237,8 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<byte[]>("TimeStamp")
                         .IsConcurrencyToken()
@@ -288,8 +271,8 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("RadioId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<byte[]>("TimeStamp")
                         .IsConcurrencyToken()
@@ -318,29 +301,29 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("IconUrl")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModelName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("ParentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Path")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ShortName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("UpdateOn")
                         .HasColumnType("datetime2");
@@ -384,7 +367,7 @@ namespace Ecommorce.API.Migrations
                     b.ToTable("coreRoleMenus");
                 });
 
-            modelBuilder.Entity("Ecommorce.Model.ProductModels.Order", b =>
+            modelBuilder.Entity("Ecommorce.Model.OrderModels.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -394,16 +377,16 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("AdminNote")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CancelOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CancelReason")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreateOnd")
                         .HasColumnType("datetime2");
@@ -431,16 +414,16 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("OnHoldReason")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("OrderNo")
                         .HasColumnType("int");
 
                     b.Property<string>("OrderNote")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
@@ -456,16 +439,16 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("PaymentOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentType")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("RefundAmount")
                         .HasColumnType("decimal(18,2)");
@@ -475,8 +458,8 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("RefundReason")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("RefundStatus")
                         .HasColumnType("int");
@@ -489,8 +472,8 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("ShippingMethod")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("ShippingStatusint")
                         .HasColumnType("int");
@@ -512,7 +495,7 @@ namespace Ecommorce.API.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Ecommorce.Model.ProductModels.OrderAddress", b =>
+            modelBuilder.Entity("Ecommorce.Model.OrderModels.OrderAddress", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -522,13 +505,13 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("AddressLine")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ContactName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreateOnd")
                         .HasColumnType("datetime2");
@@ -541,8 +524,8 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("UpdateOn")
                         .HasColumnType("datetime2");
@@ -554,7 +537,7 @@ namespace Ecommorce.API.Migrations
                     b.ToTable("OrderAddress");
                 });
 
-            modelBuilder.Entity("Ecommorce.Model.ProductModels.OrderItem", b =>
+            modelBuilder.Entity("Ecommorce.Model.OrderModels.OrderItem", b =>
                 {
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -567,8 +550,8 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("CreatedById")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("DiscountAmount")
                         .HasColumnType("decimal(18,2)");
@@ -590,18 +573,18 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("Note")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ProductMediaUrl")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("ProductPrice")
                         .HasColumnType("decimal(18,2)");
@@ -617,14 +600,84 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("UpdatedById")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("OrderId", "ProductId");
 
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.ProductModels.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryID"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("DisplayOrder")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Thumbnail")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("CategoryID");
+
+                    b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.ProductModels.Media", b =>
+                {
+                    b.Property<int>("MediaID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MediaID"));
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("MediaName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("MediaType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("MediaID");
+
+                    b.ToTable("Media");
                 });
 
             modelBuilder.Entity("Ecommorce.Model.ProductModels.Product", b =>
@@ -638,29 +691,25 @@ namespace Ecommorce.API.Migrations
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CategroyId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("CostPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
 
                     b.Property<string>("LinePrice")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -676,18 +725,19 @@ namespace Ecommorce.API.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int?>("ProductVariationVariationId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PublisherId")
                         .HasColumnType("int");
 
                     b.Property<string>("SKU")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ShortDescription")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Stock")
                         .HasColumnType("int");
@@ -696,25 +746,23 @@ namespace Ecommorce.API.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Tags")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ThumbnailImageUrl")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("VideoUrl")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
 
-                    b.HasIndex("CategroyId");
+                    b.HasIndex("ProductVariationVariationId");
 
                     b.HasIndex("PublisherId");
 
@@ -731,20 +779,20 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductID");
 
                     b.ToTable("ProductAttributes");
                 });
@@ -757,20 +805,26 @@ namespace Ecommorce.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AttributeId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDisplay")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("ValueID")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AttributeId");
+                    b.HasIndex("ValueID")
+                        .IsUnique();
 
                     b.ToTable("ProductAttributeDatas");
                 });
@@ -783,30 +837,30 @@ namespace Ecommorce.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AttributeId")
+                    b.Property<int>("AttributeID")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AttributeId");
-
-                    b.HasIndex("ProductId");
+                    b.HasIndex("AttributeID");
 
                     b.ToTable("ProductAttributeValues");
                 });
@@ -821,16 +875,16 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreateOnd")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
@@ -840,8 +894,8 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("UpdateOn")
                         .HasColumnType("datetime2");
@@ -853,112 +907,73 @@ namespace Ecommorce.API.Migrations
 
             modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductCategory", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ProductID")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreateOnd")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("DisplayOrder")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
-
-                    b.Property<bool>("IsPublished")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Thumbnail")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("UpdateOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("ProductID", "CategoryID");
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("CategoryID");
 
                     b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductMedia", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ProductID")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("MediaID")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreateOnd")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdateOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("ProductID", "MediaID");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("MediaID");
 
                     b.ToTable("ProductMedias");
                 });
 
             modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductOption", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ProductID")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreateOnd")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("DisplayType")
                         .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
@@ -966,15 +981,10 @@ namespace Ecommorce.API.Migrations
                     b.Property<int>("Name")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("UpdateOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
+                    b.HasKey("ProductID");
 
                     b.ToTable("ProductOptions");
                 });
@@ -989,28 +999,34 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Display")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("MediaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OptionId")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("ValueID")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OptionId");
+                    b.HasIndex("ValueID")
+                        .IsUnique();
 
                     b.ToTable("ProductOptionDatas");
                 });
@@ -1025,53 +1041,90 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Display")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("DisplayType")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDisplay")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Name")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductOptionDataId")
+                    b.Property<int>("OptionID")
                         .HasColumnType("int");
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("ProductOptionDataId");
+                    b.HasIndex("OptionID");
 
                     b.ToTable("ProductOptionValues");
                 });
 
-            modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductPublish", b =>
+            modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductVariation", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("VariationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VariationId"));
 
-                    b.Property<DateTime>("CreateOnd")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("CostPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("LinePrice")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("SKU")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Stock")
+                        .HasColumnType("int");
+
+                    b.HasKey("VariationId");
+
+                    b.ToTable("ProductVariations");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.ProductModels.Publisher", b =>
+                {
+                    b.Property<int>("PublisherID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PublisherID"));
 
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDisplay")
                         .HasColumnType("bit");
@@ -1082,17 +1135,9 @@ namespace Ecommorce.API.Migrations
                     b.Property<DateTime>("PublishTimeTo")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("UpdateOn")
-                        .HasColumnType("datetime2");
+                    b.HasKey("PublisherID");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ProductPublishes");
+                    b.ToTable("Publisher");
                 });
 
             modelBuilder.Entity("Ecommorce.Model.UserModel.RefreshToken", b =>
@@ -1108,13 +1153,13 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("Token")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -1131,8 +1176,8 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -1170,16 +1215,16 @@ namespace Ecommorce.API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AvatarUrl")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreateOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -1192,25 +1237,25 @@ namespace Ecommorce.API.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("UpdateOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserOpenId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -1261,6 +1306,44 @@ namespace Ecommorce.API.Migrations
                     b.ToTable("UserRoles");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityRole");
+
+                    b.UseTphMappingStrategy();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -1270,23 +1353,32 @@ namespace Ecommorce.API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ClaimValue")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityRoleClaim<string>");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -1298,89 +1390,159 @@ namespace Ecommorce.API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ClaimValue")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("AspNetUserClaims", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityUserClaim<string>");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("AspNetUserLogins", (string)null);
-                });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.HasDiscriminator().HasValue("IdentityUserLogin<string>");
 
-                    b.Property<string>("RoleId")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Value")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityUserToken<string>");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.IdentityModel.ApplicationRole", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
+
+                    b.HasDiscriminator().HasValue("ApplicationRole");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.IdentityModel.ApplicationRoleClaim", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>");
+
+                    b.HasDiscriminator().HasValue("ApplicationRoleClaim");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.IdentityModel.ApplicationUserClaim", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>");
+
+                    b.HasIndex("UserId");
+
+                    b.HasDiscriminator().HasValue("ApplicationUserClaim");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.IdentityModel.ApplicationUserLogin", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>");
+
+                    b.HasIndex("UserId");
+
+                    b.HasDiscriminator().HasValue("ApplicationUserLogin");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.IdentityModel.ApplicationUserToken", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserToken<string>");
+
+                    b.HasDiscriminator().HasValue("ApplicationUserToken");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.IdentityModel.ApplicationUserRole", b =>
+                {
+                    b.HasOne("Ecommorce.Model.IdentityModel.ApplicationRole", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ecommorce.Model.IdentityModel.ApplicationUser", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Ecommorce.Model.Model.Car", b =>
@@ -1454,9 +1616,9 @@ namespace Ecommorce.API.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Ecommorce.Model.ProductModels.OrderAddress", b =>
+            modelBuilder.Entity("Ecommorce.Model.OrderModels.OrderAddress", b =>
                 {
-                    b.HasOne("Ecommorce.Model.ProductModels.Order", "Order")
+                    b.HasOne("Ecommorce.Model.OrderModels.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1465,9 +1627,9 @@ namespace Ecommorce.API.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("Ecommorce.Model.ProductModels.OrderItem", b =>
+            modelBuilder.Entity("Ecommorce.Model.OrderModels.OrderItem", b =>
                 {
-                    b.HasOne("Ecommorce.Model.ProductModels.Order", "Order")
+                    b.HasOne("Ecommorce.Model.OrderModels.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1491,124 +1653,120 @@ namespace Ecommorce.API.Migrations
                         .HasForeignKey("BrandId")
                         .IsRequired();
 
-                    b.HasOne("Ecommorce.Model.ProductModels.ProductCategory", "Categroy")
+                    b.HasOne("Ecommorce.Model.ProductModels.ProductVariation", null)
                         .WithMany("Products")
-                        .HasForeignKey("CategroyId")
-                        .IsRequired();
+                        .HasForeignKey("ProductVariationVariationId");
 
-                    b.HasOne("Ecommorce.Model.ProductModels.ProductPublish", "Publisher")
+                    b.HasOne("Ecommorce.Model.ProductModels.Publisher", "Publisher")
                         .WithMany("Products")
                         .HasForeignKey("PublisherId")
                         .IsRequired();
 
                     b.Navigation("Brand");
 
-                    b.Navigation("Categroy");
-
                     b.Navigation("Publisher");
                 });
 
             modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductAttribute", b =>
                 {
-                    b.HasOne("Ecommorce.Model.ProductModels.Product", null)
-                        .WithMany("Attributes")
-                        .HasForeignKey("ProductId");
+                    b.HasOne("Ecommorce.Model.ProductModels.Product", "Product")
+                        .WithMany("ProductAttributes")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductAttributeData", b =>
                 {
+                    b.HasOne("Ecommorce.Model.ProductModels.ProductAttributeValue", "AttributeValue")
+                        .WithOne("AttributeData")
+                        .HasForeignKey("Ecommorce.Model.ProductModels.ProductAttributeData", "ValueID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AttributeValue");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductAttributeValue", b =>
+                {
                     b.HasOne("Ecommorce.Model.ProductModels.ProductAttribute", "ProductAttribute")
-                        .WithMany("Attributes")
-                        .HasForeignKey("AttributeId")
+                        .WithMany("AttributeValues")
+                        .HasForeignKey("AttributeID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ProductAttribute");
                 });
 
-            modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductAttributeValue", b =>
-                {
-                    b.HasOne("Ecommorce.Model.ProductModels.ProductAttribute", "Attribute")
-                        .WithMany()
-                        .HasForeignKey("AttributeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ecommorce.Model.ProductModels.Product", "Product")
-                        .WithMany("AttributesValues")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Attribute");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductCategory", b =>
                 {
-                    b.HasOne("Ecommorce.Model.ProductModels.ProductCategory", "ParentCategory")
-                        .WithMany("SubCategories")
-                        .HasForeignKey("ParentId");
+                    b.HasOne("Ecommorce.Model.ProductModels.Category", "Category")
+                        .WithMany("Categories")
+                        .HasForeignKey("CategoryID")
+                        .IsRequired();
 
-                    b.Navigation("ParentCategory");
+                    b.HasOne("Ecommorce.Model.ProductModels.Product", "Products")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("ProductID")
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductMedia", b =>
                 {
-                    b.HasOne("Ecommorce.Model.ProductModels.Product", "Product")
-                        .WithMany("Medias")
-                        .HasForeignKey("ProductId")
+                    b.HasOne("Ecommorce.Model.ProductModels.Media", "Media")
+                        .WithMany("ProductMedia")
+                        .HasForeignKey("MediaID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Ecommorce.Model.ProductModels.Product", "Product")
+                        .WithMany("ProductMedia")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Media");
 
                     b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductOption", b =>
                 {
-                    b.HasOne("Ecommorce.Model.ProductModels.Product", null)
-                        .WithMany("ProductOptions")
-                        .HasForeignKey("ProductId");
-                });
-
-            modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductOptionData", b =>
-                {
-                    b.HasOne("Ecommorce.Model.ProductModels.ProductOption", "ProductOption")
-                        .WithMany("ProductOptionDatas")
-                        .HasForeignKey("OptionId")
-                        .IsRequired();
-
-                    b.Navigation("ProductOption");
-                });
-
-            modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductOptionValue", b =>
-                {
                     b.HasOne("Ecommorce.Model.ProductModels.Product", "Product")
-                        .WithMany("ProductOptionValues")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ecommorce.Model.ProductModels.ProductOptionData", "ProductOptionData")
-                        .WithMany()
-                        .HasForeignKey("ProductOptionDataId")
+                        .WithMany("ProductOptions")
+                        .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
-
-                    b.Navigation("ProductOptionData");
                 });
 
-            modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductPublish", b =>
+            modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductOptionData", b =>
                 {
-                    b.HasOne("Ecommorce.Model.UserModel.User", "Publisher")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("Ecommorce.Model.ProductModels.ProductOptionValue", "OptionValue")
+                        .WithOne("OptionData")
+                        .HasForeignKey("Ecommorce.Model.ProductModels.ProductOptionData", "ValueID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Publisher");
+                    b.Navigation("OptionValue");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductOptionValue", b =>
+                {
+                    b.HasOne("Ecommorce.Model.ProductModels.ProductOption", "ProductOption")
+                        .WithMany("OptionValues")
+                        .HasForeignKey("OptionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductOption");
                 });
 
             modelBuilder.Entity("Ecommorce.Model.UserModel.UserFollower", b =>
@@ -1630,72 +1788,85 @@ namespace Ecommorce.API.Migrations
 
             modelBuilder.Entity("Ecommorce.Model.UserModel.UserRole", b =>
                 {
-                    b.HasOne("Ecommorce.Model.UserModel.Role", "RoleUserName")
+                    b.HasOne("Ecommorce.Model.UserModel.Role", "RoleName")
                         .WithMany("UsersRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Ecommorce.Model.UserModel.User", "UserRoleName")
+                    b.HasOne("Ecommorce.Model.UserModel.User", "UserRoles")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("RoleUserName");
+                    b.Navigation("RoleName");
 
-                    b.Navigation("UserRoleName");
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Ecommorce.Model.IdentityModel.RoleIdentity", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Ecommorce.Model.IdentityModel.ApplicationRoleClaim", b =>
                 {
-                    b.HasOne("Ecommorce.Model.IdentityModel.UsersIdentity", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("Ecommorce.Model.IdentityModel.UsersIdentity", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Ecommorce.Model.IdentityModel.RoleIdentity", null)
-                        .WithMany()
+                    b.HasOne("Ecommorce.Model.IdentityModel.ApplicationRole", "Role")
+                        .WithMany("RoleClaims")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Ecommorce.Model.IdentityModel.UsersIdentity", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Ecommorce.Model.IdentityModel.ApplicationUserClaim", b =>
                 {
-                    b.HasOne("Ecommorce.Model.IdentityModel.UsersIdentity", null)
-                        .WithMany()
+                    b.HasOne("Ecommorce.Model.IdentityModel.ApplicationUser", "User")
+                        .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.IdentityModel.ApplicationUserLogin", b =>
+                {
+                    b.HasOne("Ecommorce.Model.IdentityModel.ApplicationUser", "User")
+                        .WithMany("Logins")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.IdentityModel.ApplicationUserToken", b =>
+                {
+                    b.HasOne("Ecommorce.Model.IdentityModel.ApplicationUser", "User")
+                        .WithMany("Tokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.IdentityModel.ApplicationUser", b =>
+                {
+                    b.Navigation("Claims");
+
+                    b.Navigation("Logins");
+
+                    b.Navigation("Tokens");
+
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("Ecommorce.Model.Model.Car", b =>
@@ -1716,29 +1887,43 @@ namespace Ecommorce.API.Migrations
                     b.Navigation("Cars");
                 });
 
-            modelBuilder.Entity("Ecommorce.Model.ProductModels.Order", b =>
+            modelBuilder.Entity("Ecommorce.Model.OrderModels.Order", b =>
                 {
                     b.Navigation("OrderItems");
                 });
 
+            modelBuilder.Entity("Ecommorce.Model.ProductModels.Category", b =>
+                {
+                    b.Navigation("Categories");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.ProductModels.Media", b =>
+                {
+                    b.Navigation("ProductMedia");
+                });
+
             modelBuilder.Entity("Ecommorce.Model.ProductModels.Product", b =>
                 {
-                    b.Navigation("Attributes");
-
-                    b.Navigation("AttributesValues");
-
-                    b.Navigation("Medias");
-
                     b.Navigation("OrderDetails");
 
-                    b.Navigation("ProductOptionValues");
+                    b.Navigation("ProductAttributes");
+
+                    b.Navigation("ProductCategories");
+
+                    b.Navigation("ProductMedia");
 
                     b.Navigation("ProductOptions");
                 });
 
             modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductAttribute", b =>
                 {
-                    b.Navigation("Attributes");
+                    b.Navigation("AttributeValues");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductAttributeValue", b =>
+                {
+                    b.Navigation("AttributeData")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductBrand", b =>
@@ -1746,19 +1931,23 @@ namespace Ecommorce.API.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductCategory", b =>
-                {
-                    b.Navigation("Products");
-
-                    b.Navigation("SubCategories");
-                });
-
             modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductOption", b =>
                 {
-                    b.Navigation("ProductOptionDatas");
+                    b.Navigation("OptionValues");
                 });
 
-            modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductPublish", b =>
+            modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductOptionValue", b =>
+                {
+                    b.Navigation("OptionData")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.ProductModels.ProductVariation", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.ProductModels.Publisher", b =>
                 {
                     b.Navigation("Products");
                 });
@@ -1775,6 +1964,13 @@ namespace Ecommorce.API.Migrations
                     b.Navigation("Followers");
 
                     b.Navigation("Following");
+
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Ecommorce.Model.IdentityModel.ApplicationRole", b =>
+                {
+                    b.Navigation("RoleClaims");
 
                     b.Navigation("UserRoles");
                 });

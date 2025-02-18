@@ -11,15 +11,15 @@ namespace Ecommorce.Model.UserModel
     public class RefreshToken
     {
         public int Id { get; set; }
-        public string Token { get; set; }
-        public string Username { get; set; }
+        public required string Token { get; set; }
+        public required string Username { get; set; }
         public DateTime ExpiryDate { get; set; }
     }
 
     public class RefreshTokenRequest
     {
         [Required]
-        public string RefreshToken { get; set; }
+        public required string RefreshToken { get; set; }
     }
 
 }

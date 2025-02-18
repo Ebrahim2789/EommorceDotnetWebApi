@@ -12,9 +12,9 @@ namespace Ecommorce.Model.Model
     public class Driver : BaseEntity
     {
         [Required, StringLength(50)]
-        public string FirstName { get; set; }
+        public  string FirstName { get; set; }
         [Required, StringLength(50)]
-        public string LastName { get; set; }
+        public  string LastName { get; set; }
         public int DriverNumber { get; set; }
         public DateTime DateAdded { get; set; }= DateTime.Now;
         public DateTime DateUpdated { get; set; }=DateTime.Now;

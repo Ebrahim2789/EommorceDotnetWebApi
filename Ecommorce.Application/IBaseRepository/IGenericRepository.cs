@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Ecommorce.Model.RequestFeatures;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,9 @@ namespace Ecommorce.Application.Repository
 {
     public interface IGenericRepository<T> where T : class
     {
-
+        Task<(IEnumerable<T> Data, int TotalCount)> GetGridAsync(RequestParameters requestParameters, Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "");
+        IQueryable<T> GetGridIncluding(Expression<Func<T, bool>> pradicte , params Expression<Func<T, bool>>[] includes);
+        IQueryable<T> FindByConditions(Expression<Func<T, bool>> predicate);
         IQueryable<T> FindByCondition(Expression<Func<T, bool>> predicate);
         Task<T> GetByIdAsync(int id);
         Task<IEnumerable<T>> GetAllAsync();

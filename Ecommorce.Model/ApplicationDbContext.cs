@@ -7,6 +7,7 @@ using Ecommorce.Model.EntityConfiguration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Ecommorce.Model.ProductModels;
 using Ecommorce.Model.NewFolder;
+using Ecommorce.Model.OrderModels;
 
 namespace Ecommorce.Model
 {
@@ -14,8 +15,8 @@ namespace Ecommorce.Model
     {
 
         //public class ApplicationDbContext: IdentityDbContext< ApplicationUser, ApplicationRole, string IdentityUserClaim<string>, ApplicationUserRole, IdentityUserLogin<string>   IdentityRoleClaim<string>, IdentityUserToken<string>>
-    //    public class ApplicationDbContext : IdentityDbContext< ApplicationUser, ApplicationRole, string, ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationRoleClaim, ApplicationUserToken>
-    //{
+        //    public class ApplicationDbContext : IdentityDbContext< ApplicationUser, ApplicationRole, string, ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationRoleClaim, ApplicationUserToken>
+        //{
         public DbSet<Car> Cars { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
 
@@ -43,14 +44,14 @@ namespace Ecommorce.Model
         public DbSet<CoreRoleMenu> coreRoleMenus { get; set; }
 
         public DbSet<Product> Products { get; set; }
-
+        public DbSet<ProductVariation> ProductVariations { get; set; }
         public DbSet<ProductBrand> ProductBrands { get; set; }
 
         public DbSet<ProductCategory> ProductCategories { get; set; }
 
         public DbSet<ProductMedia> ProductMedias { get; set; }
 
-        public DbSet<ProductPublish> ProductPublishes { get; set; }
+
 
         public DbSet<ProductOption> ProductOptions { get; set; }
 
@@ -60,6 +61,14 @@ namespace Ecommorce.Model
         public DbSet<ProductAttribute> ProductAttributes { get; set; }
         public DbSet<ProductAttributeData> ProductAttributeDatas { get; set; }
         public DbSet<ProductAttributeValue> ProductAttributeValues { get; set; }
+
+
+        public DbSet<Publisher> Publisher { get; set; }
+        public DbSet<Media> Media { get; set; }
+        public DbSet<Category> Category { get; set; }
+
+
+
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
 
@@ -72,7 +81,7 @@ namespace Ecommorce.Model
         }
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
-            configurationBuilder.Properties<string>().HaveMaxLength(50);
+            configurationBuilder.Properties<string>().HaveMaxLength(100);
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -80,14 +89,21 @@ namespace Ecommorce.Model
 
 
             modelBuilder.ApplyConfiguration(new ProductConfigration());
+            modelBuilder.ApplyConfiguration(new ProductVariationConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductCategoryConfiguration());
 
-            modelBuilder.ApplyConfiguration(new ProductMediaConfigrution());
 
+            modelBuilder.ApplyConfiguration(new ProductMediaConfiguration());
+
+           modelBuilder.ApplyConfiguration(new ProductAtributeConfiguration());
             modelBuilder.ApplyConfiguration(new ProductAtributeDataConfiguration());
             modelBuilder.ApplyConfiguration(new ProductAtributeValueConfiguration());
 
             modelBuilder.ApplyConfiguration(new ProductOptionDataConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductOptionConfiguration());
             modelBuilder.ApplyConfiguration(new ProductOptionValueConfiguration());
+
+
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
 

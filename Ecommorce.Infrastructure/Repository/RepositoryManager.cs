@@ -21,21 +21,29 @@ namespace Ecommorce.Infrastructure.Repository
 
         private ProductOptionRepository _productOptionRepository;
         private ProductOptionValueRepository _productOptionValueRepository;
+
+        private ProductOptionDataRepository _productOptionDataRepository;
         private ProductAttributeRepository _productAttributeRepository;
         private ProductBrandRepository _productBrandRepository;
 
         private ProductAttributeValueRepository _productAttributeValueRepository;
-        private ProductPublishRepository _productPublishRepository;
+        private ProductAttributeDataRepository _productAttributeDataRepository;
+        private PublishRepository _productPublishRepository;
         private ProductMediaRepository _productMediaRepository;
-        private ProductCategoryRepository _productCategoryRepository;
 
-        public RepositoryManager(ApplicationDbContext context) {
+        private MediaRepository _mediaRepository;
+        private ProductCategoryRepository _productCategoryRepository;
+        private CategoryRepository _categoryRepository;
+
+        public RepositoryManager(ApplicationDbContext context)
+        {
 
             _context = context;
         }
 
 
-        public IProductRepository Product {
+        public IProductRepository Product
+        {
 
             get
             {
@@ -50,8 +58,8 @@ namespace Ecommorce.Infrastructure.Repository
         {
             get
             {
-                if(_userRepository==null)
-                    _userRepository=new UserRepository(_context);
+                if (_userRepository == null)
+                    _userRepository = new UserRepository(_context);
                 return _userRepository;
 
             }
@@ -61,9 +69,9 @@ namespace Ecommorce.Infrastructure.Repository
         {
             get
             {
-                if (_orderRepository==null)
-                _orderRepository=new OrderRepository(_context);
-               return _orderRepository;
+                if (_orderRepository == null)
+                    _orderRepository = new OrderRepository(_context);
+                return _orderRepository;
             }
         }
 
@@ -71,9 +79,9 @@ namespace Ecommorce.Infrastructure.Repository
         {
             get
             {
-                  if (_carRepository==null)
-                _carRepository=new CarRepository(_context);
-               return _carRepository;
+                if (_carRepository == null)
+                    _carRepository = new CarRepository(_context);
+                return _carRepository;
             }
         }
 
@@ -81,17 +89,19 @@ namespace Ecommorce.Infrastructure.Repository
         {
             get
             {
-                if(_driverRepository==null)
-                _driverRepository=new DriverRepository(_context);
+                if (_driverRepository == null)
+                    _driverRepository = new DriverRepository(_context);
 
                 return _driverRepository;
             }
         }
 
-        public IRoleRepository Role {
-            get{
-                if (_roleRepository==null)
-                    _roleRepository=new RoleRepository(_context);
+        public IRoleRepository Role
+        {
+            get
+            {
+                if (_roleRepository == null)
+                    _roleRepository = new RoleRepository(_context);
                 return _roleRepository;
             }
         }
@@ -100,8 +110,8 @@ namespace Ecommorce.Infrastructure.Repository
         {
             get
             {
-                if(_tokenRepository==null)
-                    _tokenRepository=new TokenRepository(_context);
+                if (_tokenRepository == null)
+                    _tokenRepository = new TokenRepository(_context);
                 return _tokenRepository;
             }
         }
@@ -111,8 +121,8 @@ namespace Ecommorce.Infrastructure.Repository
         {
             get
             {
-                if(_productOptionRepository==null)
-                    _productOptionRepository=new ProductOptionRepository(_context);
+                if (_productOptionRepository == null)
+                    _productOptionRepository = new ProductOptionRepository(_context);
                 return _productOptionRepository;
             }
         }
@@ -121,8 +131,8 @@ namespace Ecommorce.Infrastructure.Repository
         {
             get
             {
-                if (_productOptionValueRepository==null)
-                    _productOptionValueRepository=new ProductOptionValueRepository(_context);   
+                if (_productOptionValueRepository == null)
+                    _productOptionValueRepository = new ProductOptionValueRepository(_context);
                 return _productOptionValueRepository;
             }
         }
@@ -131,9 +141,9 @@ namespace Ecommorce.Infrastructure.Repository
         {
             get
             {
-               if (_productAttributeRepository==null)
+                if (_productAttributeRepository == null)
                     _productAttributeRepository = new ProductAttributeRepository(_context);
-               return _productAttributeRepository;
+                return _productAttributeRepository;
 
             }
         }
@@ -142,8 +152,8 @@ namespace Ecommorce.Infrastructure.Repository
         {
             get
             {
-                if(_productBrandRepository==null)
-                    _productBrandRepository=new ProductBrandRepository(_context);
+                if (_productBrandRepository == null)
+                    _productBrandRepository = new ProductBrandRepository(_context);
                 return _productBrandRepository;
             }
         }
@@ -152,20 +162,20 @@ namespace Ecommorce.Infrastructure.Repository
         {
             get
             {
-                if (_productAttributeValueRepository==null)
-                    _productAttributeValueRepository=new ProductAttributeValueRepository(_context);
+                if (_productAttributeValueRepository == null)
+                    _productAttributeValueRepository = new ProductAttributeValueRepository(_context);
                 return _productAttributeValueRepository;
 
             }
         }
 
-        public IProductPublishRepository ProductPublish
+        public IPublishRepository Publish
         {
             get
             {
-               if(_productPublishRepository==null)
-                    _productPublishRepository=new ProductPublishRepository(_context);
-               return _productPublishRepository;
+                if (_productPublishRepository == null)
+                    _productPublishRepository = new PublishRepository(_context);
+                return _productPublishRepository;
             }
         }
 
@@ -173,8 +183,8 @@ namespace Ecommorce.Infrastructure.Repository
         {
             get
             {
-                if (_productMediaRepository==null)
-                    _productMediaRepository=new ProductMediaRepository(_context);
+                if (_productMediaRepository == null)
+                    _productMediaRepository = new ProductMediaRepository(_context);
                 return _productMediaRepository;
             }
         }
@@ -183,13 +193,53 @@ namespace Ecommorce.Infrastructure.Repository
         {
             get
             {
-                if (_productCategoryRepository==null)
-                    _productCategoryRepository=new ProductCategoryRepository(_context);
+                if (_productCategoryRepository == null)
+                    _productCategoryRepository = new ProductCategoryRepository(_context);
                 return _productCategoryRepository;
             }
         }
 
-        public void Save()=> _context.SaveChanges();
+        public IMediaRepository Media
+        {
+            get
+            {
+                if (_mediaRepository == null)
+                    _mediaRepository = new MediaRepository(_context);
+                return _mediaRepository;
+            }
+        }
+
+        public ICategoryRepository Category
+        {
+            get
+            {
+                if (_categoryRepository == null)
+                    _categoryRepository = new CategoryRepository(_context);
+                return _categoryRepository;
+            }
+        }
+
+        public IProductOptionDataRepository ProductOptionData
+        {
+            get
+            {
+                if (_productOptionDataRepository == null)
+                    _productOptionDataRepository = new ProductOptionDataRepository(_context);
+                return _productOptionDataRepository;
+            }
+        }
+
+        public IProductAttributeDataRepository ProductAttributeData
+        {
+            get
+            {
+                if (_productAttributeDataRepository == null)
+                    _productAttributeDataRepository = new ProductAttributeDataRepository(_context);
+                return _productAttributeDataRepository;
+            }
+        }
+
+        public void Save() => _context.SaveChanges();
 
     }
 }

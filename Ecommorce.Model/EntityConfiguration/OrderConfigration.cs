@@ -1,4 +1,4 @@
-﻿using Ecommorce.Model.ProductModels;
+﻿using Ecommorce.Model.OrderModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

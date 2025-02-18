@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ecommorce.API.Controllers
 {
 
-        [Route("api/[controller]")]
-        [ApiController]
-        public class ProductOptionsController : ControllerBase
-        {
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProductOptionsController : ControllerBase
+    {
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManger _logger;
         private readonly IMapper _mapper;
@@ -26,18 +26,18 @@ namespace Ecommorce.API.Controllers
 
         [HttpGet("Option")]
         public async Task<ActionResult<ApiResponse<IEnumerable<ProductOption>>>> ProductOptionAll()
-            {
+        {
             var productsbrand = await _repository.ProductOption.GetAllAsync();
             var response = new ApiResponse<IEnumerable<ProductOption>>(productsbrand, true, "ProductOption retrieved successfully");
             return Ok(response);
         }
 
-          
 
 
-            [HttpGet("Option/{id}")]
+
+        [HttpGet("Option/{id}")]
         public async Task<ActionResult<ApiResponse<ProductOption>>> GetProductOption(int id)
-            {
+        {
             var product = await _repository.ProductOption.GetByIdAsync(id);
             if (product == null)
             {
@@ -47,11 +47,11 @@ namespace Ecommorce.API.Controllers
 
             var response = new ApiResponse<ProductOption>(product, true, "PProductOptionroduct retrieved successfully");
             return Ok(response);
-            }
+        }
 
-            [HttpPost("Option")]
+        [HttpPost("Option")]
         public async Task<ActionResult<ApiResponse<IEnumerable<ProductBrand>>>> AddProductOption([FromBody] ProductOptionDTO value)
-            {
+        {
 
 
             if (value == null)
@@ -80,7 +80,7 @@ namespace Ecommorce.API.Controllers
 
         [HttpPut("Option/{id}")]
         public async Task<ActionResult<ApiResponse<ProductBrand>>> EditProductOption(int id, [FromBody] ProductOptionDTO value)
-            {
+        {
 
             var products = await _repository.ProductOption.GetByIdAsync(id);
 
@@ -107,9 +107,9 @@ namespace Ecommorce.API.Controllers
         }
 
 
-            [HttpDelete("{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteProductOption(int id)
-            {
+        {
             var products = await _repository.ProductOption.GetByIdAsync(id);
 
             if (products == null)
@@ -123,10 +123,10 @@ namespace Ecommorce.API.Controllers
             var response = new ApiResponse<bool>(true, true, "ProductOption deleted successfully");
             return Ok(response);
         }
-        
 
 
-     
+
+
     }
 
 }

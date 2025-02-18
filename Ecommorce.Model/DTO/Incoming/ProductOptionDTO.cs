@@ -9,9 +9,10 @@ namespace Ecommorce.Model.DTO.Incoming
     public class ProductOptionDTO
     {
 
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public required string Name { get; set; }
+        public required string Description { get; set; }
         public int DisplayType { get; set; }
+        public int ProductId { get; set; }
 
     }
 }

@@ -61,7 +61,10 @@ namespace Ecommorce.API.Controllers
 
                 return BadRequest("ProductAttributeValue object is null");
             }
+            var productAttribute=   _repository.ProductAttribute.GetByIdAsync(value.AttributeId);
+
             var productBrandEntity = _mapper.Map<ProductAttributeValue>(value);
+            // productBrandEntity.Attribute = productAttribute.Result;
 
             await _repository.ProductAttributeValue.AddAsync(productBrandEntity);
 

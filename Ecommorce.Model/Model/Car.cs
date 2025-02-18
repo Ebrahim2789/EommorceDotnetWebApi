@@ -13,9 +13,9 @@ namespace Ecommorce.Model.Model
     public class Car:BaseEntity
     {
         [Required,StringLength(50)]
-        public string Color { get; set; }
+        public  string Color { get; set; }
         [Required,StringLength(50)]
-        public string PetName { get; set; }
+        public  string PetName { get; set; }
 
         private bool? _isDrivable;
         public bool IsDrivable
@@ -24,16 +24,16 @@ namespace Ecommorce.Model.Model
             set => _isDrivable = value;
         }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public string Display { get; set; }
+        public  string Display { get; set; }
         //One - to - Many Relationships
 
         public int MakeId { get; set; }
         [ForeignKey(nameof(MakeId))]
-        public Make MakeNavigation { get; set; }
+        public  Make MakeNavigation { get; set; }
 
 
         //One - to - One Relationships
-        public Radio RadioNavigation { get; set; }
+        public  Radio RadioNavigation { get; set; }
 
         //Many - to - Many Relationships
         [InverseProperty(nameof(Driver.Cars))]

@@ -39,7 +39,7 @@ namespace Ecommorce.API.Controllers
         public async Task<ActionResult<IEnumerable<User>>> Login([FromBody] LoginDTO model)
         {
             var users = await _repository.User.FindByCondition(users => users.Email == model.Email).Include(users => users.UserRoles)
-                  .ThenInclude(ur => ur.RoleUserName)
+                  .ThenInclude(ur => ur.RoleName)
                .FirstOrDefaultAsync(u => u.Email == model.Email);
 
 
@@ -55,7 +55,7 @@ namespace Ecommorce.API.Controllers
 
             foreach (var userRole in users.UserRoles)
             {
-                claiems.Add(new Claim(ClaimTypes.Role, userRole.RoleUserName.Name));
+                claiems.Add(new Claim(ClaimTypes.Role, userRole.RoleName.Name));
             }
 
             var accessToken = _authService.BuildToken(claiems);
@@ -83,7 +83,7 @@ namespace Ecommorce.API.Controllers
 
 
             var users = await _repository.User.FindByCondition(users => users.UserName == userName).Include(users => users.UserRoles)
-                 .ThenInclude(ur => ur.RoleUserName)
+                 .ThenInclude(ur => ur.RoleName)
               .FirstOrDefaultAsync(u => u.UserName == userName);
 
 
@@ -94,7 +94,7 @@ namespace Ecommorce.API.Controllers
             };
             foreach (var userRole in users.UserRoles)
             {
-                claiems.Add(new Claim(ClaimTypes.Role, userRole.RoleUserName.Name));
+                claiems.Add(new Claim(ClaimTypes.Role, userRole.RoleName.Name));
             }
 
             var newaccessToken = _authService.BuildToken(claiems);

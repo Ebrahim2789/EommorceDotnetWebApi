@@ -12,10 +12,10 @@ namespace Ecommorce.Model.Model
     {
         public int DriverId { get; set; }
         [ForeignKey(nameof(DriverId))]
-        public Driver DriverNavigation { get; set; }
+        public  Driver DriverNavigation { get; set; }
         [Column("InventoryId")]
         public int CarId { get; set; }
         [ForeignKey(nameof(CarId))]
-        public Car CarNavigation { get; set; }
+        public  Car CarNavigation { get; set; }
     }
 }

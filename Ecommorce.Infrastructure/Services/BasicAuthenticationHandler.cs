@@ -92,7 +92,7 @@ namespace Ecommorce.Infrastructure.Services
 
             foreach (var userRole in user.UserRoles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, userRole.RoleUserName.Name));
+                claims.Add(new Claim(ClaimTypes.Role, userRole.RoleName.Name));
             }  // Create an identity with claims
             var identity = new ClaimsIdentity(claims, Scheme.Name);
             // Create principal from identity

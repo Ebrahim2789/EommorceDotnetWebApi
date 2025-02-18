@@ -14,11 +14,12 @@ namespace Ecommorce.Model.UserModel
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
-        [InverseProperty(nameof(UserRole.RoleUserName))]
+        [InverseProperty(nameof(UserRole.RoleName))]
+
         public IEnumerable<UserRole>? UsersRoles { get; set; }= new List<UserRole>();
 
-        public virtual ICollection<CoreRoleMenu> RoleMenus { get; set; }
+        public virtual  ICollection<CoreRoleMenu> RoleMenus { get; set; }
     }
 }

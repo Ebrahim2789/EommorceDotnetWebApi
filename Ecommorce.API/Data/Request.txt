@@ -1,3 +1,8 @@
   "email": "Abdaalaskd@gmail.com",
   "password": "jonepassword",
   "userName": "Abdallaa jolle"
+
+
+
+  //ProductOption ProductOptionValue ProductAttribute ProductAttributeValue
+//ProductPublish ProductMedia ProductBrand ProductCategory

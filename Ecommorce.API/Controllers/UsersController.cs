@@ -1,30 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Ecommorce.Model;
-using Ecommorce.Model.UserModel;
-using Ecommorce.Infrastructure.Services;
-using Microsoft.IdentityModel.Tokens;
-using NuGet.Common;
-using System.Data;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.CodeAnalysis.Scripting;
-using Microsoft.AspNetCore.Authorization;
-using Ecommorce.Infrastructure.Repository;
+﻿
+using Ecommorce.Application.ILogger;
 using Ecommorce.Application.Repository;
-using NuGet.Protocol.Core.Types;
-using Ecommorce.Application.IRepository;
 using Ecommorce.Model.DTO;
 using Ecommorce.Model.Shared;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using Azure;
-using Ecommorce.Application.ILogger;
+using Ecommorce.Model.UserModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ecommorce.API.Controllers
 {
@@ -44,26 +26,22 @@ namespace Ecommorce.API.Controllers
         //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            try
-            {
 
-                var user = await _repository.Role.GetByIdAsync(2);
+            var user = await _repository.User.GetByIdAsync(1);
 
-                var userrole = _repository.User.FindByCondition(u => u.Id == user.Id).Include(u => u.UserRoles).ThenInclude(u => u.RoleUserName);
+            var userrole = await _repository.User.FindByCondition(users => users.Email == user.Email).Include(users => users.UserRoles)
+                 .ThenInclude(ur => ur.RoleName).FirstOrDefaultAsync(u => u.Email == user.Email);
 
-                var userfollower = await _repository.User.FindByCondition(u => u.Id == user.Id).Include(u => u.Followers).ThenInclude(u => u.Following).ToListAsync();
 
-                // var userfollowing = _repository.User.FindByCondition(u => u.Id == user.Id).Include(users => users.Following)
-                //                    .ThenInclude(users => users.Following);
 
-                return Ok(userfollower);
 
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Something went wrong in the {nameof(GetUsers)}  action {ex} ");
-                return StatusCode(500, "Internal server error");
-            }
+            //var userfollower = await _repository.User.FindByCondition(u => u.Id == user.Id).Include(u => u.Followers).ThenInclude(u => u.Following).ToListAsync();
+
+            // var userfollowing = _repository.User.FindByCondition(u => u.Id == user.Id).Include(users => users.Following)
+            //                    .ThenInclude(users => users.Following);
+
+            return Ok(userrole);
+
 
 
         }
@@ -80,7 +58,7 @@ namespace Ecommorce.API.Controllers
 
                 if (result != null)
                 {
-                    response = new ApiResponse<User>(result, true, "UserEmail and username ares alrready exist");
+                    response = new ApiResponse<User>(result, true, "UserEmail and username Ares alrready exist");
                     return BadRequest(response);
                 }
                 var users = new User
@@ -94,18 +72,22 @@ namespace Ecommorce.API.Controllers
                     UserRoles = new List<UserRole>()
                 };
 
-                var role = _repository.Role.GetByIdAsync(2);
+                var roleids = await _repository.Role.GetAllAsync();
 
 
-                UserRole userRole = new UserRole();
+                List<int> r = [1, 2, 3];
 
 
-                userRole.RoleId = role.Id;
-                userRole.UserId = users.Id;
-                userRole.UserRoleName = users;
+                foreach (var roleid in roleids)
+                {
+                    users.UserRoles.Add(new UserRole
+                    {
+                        RoleId = roleid.Id,
+                        RoleName = roleid,
+                        UserRoles = users
 
-                users.UserRoles.Add(userRole);
-
+                    });
+                }
 
 
                 await _repository.User.AddAsync(users);
@@ -122,7 +104,7 @@ namespace Ecommorce.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<User>> GetUser(int id)
         {
             try

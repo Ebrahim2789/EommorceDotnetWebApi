@@ -66,7 +66,36 @@ namespace Ecommorce.API.Controllers
             }
             var productBrandEntity = _mapper.Map<ProductAttribute>(value);
 
-            await _repository.ProductAttribute.AddAsync(productBrandEntity);
+
+            if (value.ProductId != null)
+            {
+
+                var attribute = new ProductAttribute { ProductID = value.ProductId, Name = "Color", Description = "this for this" };
+
+                try
+                {
+                    await _repository.ProductAttribute.AddAsync(attribute);
+
+                    var values = new ProductAttributeValue { AttributeID = attribute.Id, Name = "", Value = "Red", Description = "" };
+
+
+                    await _repository.ProductAttributeValue.AddAsync(values);
+
+                    var data = new ProductAttributeData { ValueID = values.Id, Name = "Image", Value = "red-shirt.jpg" };
+
+                    await _repository.ProductAttributeData.AddAsync(data);
+                }
+                catch (Exception ex)
+                {
+                    var errorResponse = new ApiResponse<bool>(false, false, "Product not found");
+                    return NotFound(errorResponse);
+
+                }
+
+
+            }
+
+            //await _repository.ProductAttribute.AddAsync(productBrandEntity);
 
 
             var productBrandReturn = _mapper.Map<ProductAttributeDTO>(productBrandEntity);
@@ -87,7 +116,7 @@ namespace Ecommorce.API.Controllers
             var products = await _repository.ProductAttribute.GetByIdAsync(id);
 
             var productBrandEntity = _mapper.Map<ProductAttribute>(value);
-     
+
 
             if (products == null)
             {

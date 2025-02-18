@@ -159,6 +159,7 @@ namespace Ecommorce.API.Controllers
                 UserName = "hosooos",
                 Email = "Adaalad@gmail.com",
                 Password = "jonepassword",
+                UserOpenId="hhh"
             };
             await _userServices.AddUserWithFollowerAndRole(
                 user,

@@ -1,6 +1,5 @@
 using Ecommorce.Application.Repository;
-using Ecommorce.Model.ProductModels;
-
+using Ecommorce.Model.OrderModels;
 
 namespace Ecommorce.Application.IRepository
 {

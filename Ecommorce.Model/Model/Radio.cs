@@ -13,10 +13,10 @@ namespace Ecommorce.Model.Model
         public bool HasTweeters { get; set; }
         public bool HasSubWoofers { get; set; }
         [Required, StringLength(50)]
-        public string RadioId { get; set; }
+        public  string RadioId { get; set; }
         [Column("CarId")]
         public int CarId { get; set; }
         [ForeignKey(nameof(CarId))]
-        public Car CarNavigation { get; set; }
+        public  Car CarNavigation { get; set; }
     }
 }

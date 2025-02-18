@@ -1,10 +1,14 @@
 ﻿
+using System.Linq.Expressions;
 using Ecommorce.Application.ILogger;
-using Ecommorce.Application.IRepository;
 using Ecommorce.Application.Repository;
+
 using Ecommorce.Model.ProductModels;
+using Ecommorce.Model.RequestFeatures;
 using Ecommorce.Model.Shared;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Ecommorce.API.Controllers
 
@@ -43,11 +47,32 @@ namespace Ecommorce.API.Controllers
 
 
 
-        [HttpGet("grid")]
-        public async Task<ActionResult<ApiResponse<IEnumerable<Product>>>> GetProductGrid()
+
+
+
+
+        [HttpGet("GetProductGridAsnyc")]
+        public async Task<ActionResult<ApiResponse<IEnumerable<Product>>>> GetProductGridAsnyc([FromQuery] ProductParameters productParameters)
         {
-            var products = await _repository.Product.GetAllAsync();
-            var response = new ApiResponse<IEnumerable<Product>>(products, true, "Products retrieved successfully");
+            var products = await _repository.Product.GetProductsAsync(10, productParameters, false);
+
+            var response = new ApiResponse<IEnumerable<Product>>(products, true, $"{products} Products retrieved successfully");
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(products.MetaData));
+
+            return Ok(response);
+        }
+
+        [HttpGet("grid")]
+        public async Task<ActionResult<ApiResponse<IEnumerable<Product>>>> GetProductGrid([FromQuery] ProductParameters productParameters)
+        {
+
+            var expression = "p => p.ProductCategories,p=>p.ProductAttributes,p=>p.Brand";
+  
+            var products = await _repository.Product.GetGridAsync(productParameters, orderBy: q => q.OrderBy(p => p.Name), includeProperties: expression);
+
+            var response = new ApiResponse<IEnumerable<Product>>(products.Data, true, $"{products.TotalCount} Products retrieved successfully");
+
+
             return Ok(response);
         }
 
@@ -60,16 +85,27 @@ namespace Ecommorce.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ApiResponse<Product>>> GetProductById(int id)
+        public async Task<ActionResult<ApiResponse<IEnumerable<Product>>>> GetProductById(int id)
         {
+
+
             var product = await _repository.Product.GetByIdAsync(id);
+     
+
+            var products = await _repository.Product.FindByCondition(p => p.Id == product.Id).Include(p => p.ProductCategories).Include(p => p.ProductAttributes).Include(p => p.Brand).
+            ToListAsync();
+
+            //  .Include(p => p.ProductCategories).ThenInclude(p => P.ProductAttributes).FirstOrDefaultAsync(p => p.Id == id);
+
+
             if (product == null)
             {
                 var errorResponse = new ApiResponse<bool>(false, false, "Product not found");
                 return NotFound(errorResponse);
             }
 
-            var response = new ApiResponse<Product>(product, true, "Product retrieved successfully");
+            var response = new ApiResponse<IEnumerable<Product>>(products, true, "Product retrieved successfully");
+
             return Ok(response);
         }
 
@@ -77,14 +113,74 @@ namespace Ecommorce.API.Controllers
         public async Task<ActionResult<ApiResponse<Product>>> AddProduct(Product product)
         {
 
-            var createdProduct = _repository.Product.AddAsync(product);
-            var data = await _repository.Product.GetByIdAsync(createdProduct.Id);
 
-            var response = new ApiResponse<Product>(data, true, "Product added successfully");
+
+            if (product == null) return null;
+
+            var brand = await _repository.ProductBrand.GetByIdAsync(product.BrandId);
+            var publish = await _repository.Publish.GetByIdAsync(product.PublisherId);
+            var pcatgory = product.ProductCategories;
+            //pcatgory.
+
+            product.Brand = brand;
+            product.BrandId = brand.Id;
+
+            product.PublisherId = publish.PublisherID;
+            product.Publisher = publish;
+            //product.ProductCategories= pcatgory;
+
+            var createdProduct = _repository.Product.AddAsync(product);
+
+
+            if (createdProduct.Id != null)
+            {
+
+                var attribute = new ProductAttribute { ProductID = product.Id, Name = "Color", Description = "this for this" };
+                //  var value = new ProductAttributeValue {AttributeID = attribute.Id, Name="", Value = "Red" , Description=""};
+
+
+                // await _repository.ProductAttributeValue.AddAsync(value);
+
+                //  var data = new ProductAttributeData { ValueID = value.Id, Name = "Image", Value = "red-shirt.jpg" };
+
+                //await  _repository.ProductAttributeData.AddAsync(data);
+                try
+                {
+                    await _repository.ProductAttribute.AddAsync(attribute);
+                }
+                catch (Exception ex)
+                {
+                    var errorResponse = new ApiResponse<bool>(false, false, "Product not found");
+                    return NotFound(errorResponse);
+
+                }
+
+
+
+            }
+
+
+            var response = new ApiResponse<object>(createdProduct, true, "Product added successfully");
 
             return CreatedAtAction(nameof(GetProductById), new { id = createdProduct.Id }, response);
         }
+        [HttpPost("Publisher")]
+        public async Task<ActionResult<ApiResponse<Publisher>>> AddPublisher(Publisher product)
+        {
 
+
+
+            if (product == null) return null;
+
+
+
+            var createdProduct = _repository.Publish.AddAsync(product);
+
+
+            var response = new ApiResponse<Publisher>(product, true, "Product added successfully");
+
+            return CreatedAtAction(nameof(GetProductById), new { id = createdProduct.Id }, response);
+        }
         [HttpPut("{id}")]
         public async Task<ActionResult<ApiResponse<Product>>> UpdateProduct(int id, Product product)
         {
@@ -122,7 +218,7 @@ namespace Ecommorce.API.Controllers
                 return NotFound(errorResponse);
 
             }
-               _repository.Product.Delete(product);
+            _repository.Product.Delete(product);
 
             var response = new ApiResponse<bool>(true, true, "Product deleted successfully");
             return Ok(response);
@@ -135,8 +231,8 @@ namespace Ecommorce.API.Controllers
 
         public async Task<ActionResult<ApiResponse<Product>>> PublishProduct(Product product)
         {
-        //public async Task<ActionResult<ApiResponse<ProductPublish>>> PublishProduct(PublishProductDTO product)
-        //{
+            //public async Task<ActionResult<ApiResponse<ProductPublish>>> PublishProduct(PublishProductDTO product)
+            //{
             var createdProduct = _repository.Product.AddAsync(product);
             var data = await _repository.Product.GetByIdAsync(createdProduct.Id);
 
