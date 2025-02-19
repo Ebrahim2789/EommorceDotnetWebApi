@@ -25,6 +25,17 @@ namespace Ecommorce.Model.RequestFeatures
     }
     public class ProductParameters : RequestParameters
     {
+     
+
     }
 
+    public class FiltersParameters : RequestParameters
+    {
+        public uint OrderMinimumQuantity { get; set; }
+        public uint OrderMaximumQuantity { get; set; } = int.MaxValue;
+        public bool ValidOrderRange => OrderMaximumQuantity > OrderMinimumQuantity;
+  
+        public string SearchTerm { get; set; }
+
+    }
 }

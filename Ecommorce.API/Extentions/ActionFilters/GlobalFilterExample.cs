@@ -8,7 +8,7 @@ using System;
 
 namespace Ecommorce.API.Extentions.ActionFilters
 {
-    public  class GlobalFilterExample : Attribute, IFilterMetadata, IActionFilter, IAsyncActionFilter
+    public class GlobalFilterExample : Attribute, IFilterMetadata, IActionFilter, IAsyncActionFilter
     //IAsyncActionFilter
     //, , IOrderedFilter  IResultFilter
 
@@ -45,14 +45,14 @@ namespace Ecommorce.API.Extentions.ActionFilters
             var param = context.ActionArguments.SingleOrDefault(x => x.Value.ToString().Contains("All")).Value;
             if (controller == null)
             {
-                _logger.LogError($"Object sent from client is null. Controller: {controller},  action: { action} ");
-            context.Result = new BadRequestObjectResult($"Object is null. Controller: { controller }, action: { action} ");
-            return;
+                _logger.LogError($"Object sent from client is null. Controller: {controller},  action: {action} ");
+                context.Result = new BadRequestObjectResult($"Object is null. Controller: {controller}, action: {action} ");
+                return;
             }
             if (!context.ModelState.IsValid)
             {
-                _logger.LogError($"Invalid model state for the object. Controller:   { controller}, action: { action}");
-            context.Result = new UnprocessableEntityObjectResult(context.ModelState);
+                _logger.LogError($"Invalid model state for the object. Controller:   {controller}, action: {action}");
+                context.Result = new UnprocessableEntityObjectResult(context.ModelState);
             }
         }
 
@@ -124,7 +124,7 @@ namespace Ecommorce.API.Extentions.ActionFilters
             if (company == null)
             {
                 _logger.LogInfo($"Company with id: {companyId} doesn't exist in the  database.");
-               
+
                 context.Result = new NotFoundResult();
                 return;
             }

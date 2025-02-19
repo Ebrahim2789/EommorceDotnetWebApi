@@ -47,7 +47,17 @@ namespace Ecommorce.Infrastructure.Repositories
 
             return PagedList<Product>.ToPagedList(products.Data, productParameters.PageNumber, productParameters.PageSize);
         }
+        public async Task<PagedList<Product>> FilterProductsAsync(int id, FiltersParameters filtersParameters, bool trackChanges)
+        {
 
+            var products = await GetGridAsync(filtersParameters, orderBy: q => q.OrderBy(p => p.Name));
+
+
+            var products1 = await FindByConditions(e => e.Id == id && e.OrderMinimumQuantity>=filtersParameters.OrderMinimumQuantity && e.OrderMaximumQuantity<=filtersParameters.OrderMaximumQuantity)
+            .OrderBy(e => e.Name).ToListAsync();
+
+            return PagedList<Product>.ToPagedList(products.Data, filtersParameters.PageNumber, filtersParameters.PageSize);
+        }
 
     }
 

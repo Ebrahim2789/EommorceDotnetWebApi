@@ -46,11 +46,6 @@ namespace Ecommorce.API.Controllers
         }
 
 
-
-
-
-
-
         [HttpGet("GetProductGridAsnyc")]
         public async Task<ActionResult<ApiResponse<IEnumerable<Product>>>> GetProductGridAsnyc([FromQuery] ProductParameters productParameters)
         {
