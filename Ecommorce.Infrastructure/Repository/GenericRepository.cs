@@ -81,16 +81,16 @@ namespace Ecommorce.Infrastructure.Repository
 
 
 
-        public async Task<(IEnumerable<T> Data, int TotalCount)> GetGridAsync(RequestParameters requestParameters, Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "")
+        public async Task<(IEnumerable<T> Data, int TotalCount)> GetGridAsync(RequestParameters requestParameters, Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _dbSet;
             if (predicate != null)
             {
                 query = query.Where(predicate);
             }
-            foreach (var entity in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+              foreach (var include in includes)
             {
-                query = query.Include(entity);
+                query = query.Include(include);
             }
             int totalCount = await query.CountAsync();
 
@@ -117,7 +117,28 @@ namespace Ecommorce.Infrastructure.Repository
 
         }
 
-        public IQueryable<T> GetGridIncluding(Expression<Func<T, bool>> pradicte , params Expression<Func<T, bool>>[] includes)
+
+
+        public IQueryable<T>  FindIncluding(List<Expression<Func<T, bool>>> conditions, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _dbSet;
+
+            // Apply includes
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            // Apply conditions
+            foreach (var condition in conditions)
+            {
+                query = query.Where(condition);
+            }
+
+            return query;
+        }
+
+        public IQueryable<T> GetGridIncluding(Expression<Func<T, bool>> pradicte, params Expression<Func<T, bool>>[] includes)
         {
 
             IQueryable<T> query = _dbSet;

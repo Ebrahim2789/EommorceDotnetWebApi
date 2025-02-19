@@ -48,10 +48,10 @@ namespace Ecommorce.Model.ProductModels
         public virtual  Publisher? Publisher { get; set; }
 
  
-        public virtual  ICollection<ProductCategory>? ProductCategories { get; set; }
+        public virtual  ICollection<ProductCategory> ProductCategories { get; set; }
         public virtual  ICollection<ProductMedia>? ProductMedia { get; set; }
         public virtual  ICollection<ProductOption>? ProductOptions { get; set; }
-        public virtual  ICollection<ProductAttribute>? ProductAttributes { get; set; }
+        public virtual  ICollection<ProductAttribute> ProductAttributes { get; set; }
 
 
         public virtual ICollection<OrderItem>? OrderDetails { get; set; }

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ecommorce.Application.IRepository;
 using Ecommorce.Application.Repository;
+using Ecommorce.Infrastructure.Extension;
 using Ecommorce.Infrastructure.Repository;
 using Ecommorce.Model;
 using Ecommorce.Model.ProductModels;
@@ -41,7 +42,7 @@ namespace Ecommorce.Infrastructure.Repositories
 
             var products = await GetGridAsync(productParameters, orderBy: q => q.OrderBy(p => p.Name));
 
-
+            //  _context.Entry(products).Reference(p=>p.categories).Load();
             // var products = await FindByConditions(e => e.Id == id)
             // .OrderBy(e => e.Name).Skip((productParameters.PageNumber - 1) * productParameters.PageSize).Take(productParameters.PageSize).ToListAsync();
 
@@ -50,13 +51,23 @@ namespace Ecommorce.Infrastructure.Repositories
         public async Task<PagedList<Product>> FilterProductsAsync(int id, FiltersParameters filtersParameters, bool trackChanges)
         {
 
-            var products = await GetGridAsync(filtersParameters, orderBy: q => q.OrderBy(p => p.Name));
+            // var products = await GetGridAsync(filtersParameters, orderBy: q => q.OrderBy(p => p.Name));
+
+            // var product2= await GetAllAsync();
 
 
-            var products1 = await FindByConditions(e => e.Id == id && e.OrderMinimumQuantity>=filtersParameters.OrderMinimumQuantity && e.OrderMaximumQuantity<=filtersParameters.OrderMaximumQuantity)
-            .OrderBy(e => e.Name).ToListAsync();
+            var products1 = await FindByConditions(e => e.Id >=1 )
+             .FilterProducts(filtersParameters.OrderMinimumQuantity, filtersParameters.OrderMaximumQuantity)
+              .Search(filtersParameters.SearchTerm)
+              .Sort(filtersParameters.OrderBy)
+            //   .OrderBy(e => e.Name)
+              .ToListAsync();
 
-            return PagedList<Product>.ToPagedList(products.Data, filtersParameters.PageNumber, filtersParameters.PageSize);
+
+
+
+
+            return PagedList<Product>.ToPagedList(products1, filtersParameters.PageNumber, filtersParameters.PageSize);
         }
 
     }
@@ -138,5 +149,9 @@ namespace Ecommorce.Infrastructure.Repositories
         {
         }
     }
+
+
+
+    
 
 }

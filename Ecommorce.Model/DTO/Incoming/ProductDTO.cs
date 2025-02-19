@@ -17,7 +17,7 @@ namespace Ecommorce.Model.DTO.Incoming
         [Required(ErrorMessage = "Code is a required field.")]
         public required string Code { get; set; }
         public decimal Price { get; set; }
- 
+
         public decimal CostPrice { get; set; }
 
         [Required]
@@ -27,13 +27,17 @@ namespace Ecommorce.Model.DTO.Incoming
         public bool IsPublished { get; set; }
 
         public int BrandId { get; set; }
-   
-        public int PublisherId { get; set; }
-   
-        public int  ProductCategoriesID { get; set; }
-        public int ProductMediaID { get; set; }
-        public int ProductOptionsID { get; set; }
-        public int ProductAttributesID { get; set; }
 
+        public int PublisherId { get; set; }
+
+        // public int ProductCategoriesID { get; set; }
+        // public int ProductMediaID { get; set; }
+        // public int ProductOptionsID { get; set; }
+        // public int ProductAttributesID { get; set; }
+
+    }
+
+    public class ProductDto
+    {
     }
 }

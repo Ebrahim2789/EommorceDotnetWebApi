@@ -1,8 +1,10 @@
 ﻿
 using System.Linq.Expressions;
+using AutoMapper;
+using Ecommorce.Application.Extensions;
 using Ecommorce.Application.ILogger;
 using Ecommorce.Application.Repository;
-
+using Ecommorce.Model.DTO.Incoming;
 using Ecommorce.Model.ProductModels;
 using Ecommorce.Model.RequestFeatures;
 using Ecommorce.Model.Shared;
@@ -20,12 +22,17 @@ namespace Ecommorce.API.Controllers
 
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManger _logger;
-
-        public ProductsController(IRepositoryManager repository, ILoggerManger logger)
+        private readonly IDataShaper<ProductDTO> _dataShaper;
+        private readonly IMapper _mapper;
+        public ProductsController(IRepositoryManager repository, IDataShaper<ProductDTO> dataShaper, ILoggerManger logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
+            _dataShaper = dataShaper;
+            _mapper = mapper;
         }
+
+
 
         [HttpGet("customer")]
 
@@ -46,26 +53,67 @@ namespace Ecommorce.API.Controllers
         }
 
 
+
+        [HttpGet("FilterProductsAsync")]
+        public async Task<IActionResult> FilterProductsAsync([FromQuery] FiltersParameters productParameters)
+        {
+            var products = await _repository.Product.FilterProductsAsync(10, productParameters, false);
+            // var products = await _repository.Product.GetByIdAsync(11);
+            var response = new ApiResponse<IEnumerable<Product>>(products, true, $"{products} Products retrieved successfully");
+            Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(products.MetaData));
+
+            return Ok(response);
+            // var productsDto = _mapper.Map<IEnumerable<ProductDTO>>(products);
+
+            // return Ok(_dataShaper.ShapeData(productsDto, productParameters.Fields));
+
+        }
+
         [HttpGet("GetProductGridAsnyc")]
         public async Task<ActionResult<ApiResponse<IEnumerable<Product>>>> GetProductGridAsnyc([FromQuery] ProductParameters productParameters)
         {
             var products = await _repository.Product.GetProductsAsync(10, productParameters, false);
 
             var response = new ApiResponse<IEnumerable<Product>>(products, true, $"{products} Products retrieved successfully");
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(products.MetaData));
+            Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(products.MetaData));
 
             return Ok(response);
+
+
+
         }
 
         [HttpGet("grid")]
         public async Task<ActionResult<ApiResponse<IEnumerable<Product>>>> GetProductGrid([FromQuery] ProductParameters productParameters)
         {
 
-            var expression = "p => p.ProductCategories,p=>p.ProductAttributes,p=>p.Brand";
-  
-            var products = await _repository.Product.GetGridAsync(productParameters, orderBy: q => q.OrderBy(p => p.Name), includeProperties: expression);
+    
 
-            var response = new ApiResponse<IEnumerable<Product>>(products.Data, true, $"{products.TotalCount} Products retrieved successfully");
+
+
+
+            var products = await _repository.Product.GetGridAsync(productParameters, orderBy: q => q.OrderBy(p => p.Name), includes: p => p.ProductCategories,
+                    p=>p.ProductAttributes,
+                    p=>p.Brand);
+            //  var response = new ApiResponse<IEnumerable<Product>>(products, true, $"{products.TotalCount} Products retrieved successfully");
+
+
+
+            // Usage:
+            var conditions = new List<Expression<Func<Product, bool>>>
+                    {
+                        u => true,
+
+                    };
+
+            var product2 = _repository.Product.FindIncluding(conditions,      p => p.ProductCategories,
+                    p=>p.ProductAttributes,
+                    p=>p.Brand);
+
+            var response = new ApiResponse<IEnumerable<Product>>(products, true, $" Products retrieved successfully");
+
+
+
 
 
             return Ok(response);
@@ -85,10 +133,13 @@ namespace Ecommorce.API.Controllers
 
 
             var product = await _repository.Product.GetByIdAsync(id);
-     
 
-            var products = await _repository.Product.FindByCondition(p => p.Id == product.Id).Include(p => p.ProductCategories).Include(p => p.ProductAttributes).Include(p => p.Brand).
-            ToListAsync();
+
+            var products = await _repository.Product.FindByCondition(p => p.Id == product.Id).Include(p => p.ProductCategories)
+            .Include(p => p.ProductAttributes).Include(p => p.Brand).Include(p => p.ProductOptions)
+            .ToListAsync();
+
+
 
             //  .Include(p => p.ProductCategories).ThenInclude(p => P.ProductAttributes).FirstOrDefaultAsync(p => p.Id == id);
 

@@ -17,6 +17,8 @@ using Ecommorce.Infrastructure.Extension;
 using Ecommorce.API.Extentions;
 using Ecommorce.API.Extentions.ActionFilters;
 using AutoMapper;
+using Ecommorce.Model.DTO.Incoming;
+using Ecommorce.Application.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +42,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(opts =>
 b.MigrationsAssembly("Ecommorce.API")));
 
 builder.Services.AddScoped<ILoggerManger, LoggerManger>();
+
+// dataReshaping only required enitity will be reterned
+
+builder.Services.AddScoped<IDataShaper<ProductDTO>, DataShaper<ProductDTO>>();
 
 //AutoMapper injection
 

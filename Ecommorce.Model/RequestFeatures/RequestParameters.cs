@@ -22,20 +22,31 @@ namespace Ecommorce.Model.RequestFeatures
                 _pageSize = (value > maxPageSize) ? maxPageSize : value;
             }
         }
+
+        public string OrderBy { get; set; }
+
+
+
     }
     public class ProductParameters : RequestParameters
     {
-     
+
 
     }
 
     public class FiltersParameters : RequestParameters
     {
-        public uint OrderMinimumQuantity { get; set; }
-        public uint OrderMaximumQuantity { get; set; } = int.MaxValue;
+
+        public FiltersParameters()
+        {
+            OrderBy = "name";
+        }
+        public int OrderMinimumQuantity { get; set; }
+        public int OrderMaximumQuantity { get; set; } = int.MaxValue;
         public bool ValidOrderRange => OrderMaximumQuantity > OrderMinimumQuantity;
-  
+
         public string SearchTerm { get; set; }
+        public string Fields { get; set; }
 
     }
 }

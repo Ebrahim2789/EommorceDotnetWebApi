@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommorce.Application", "Ec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommorce.Infrastructure", "Ecommorce.Infrastructure\Ecommorce.Infrastructure.csproj", "{506C822A-837E-40EE-BF94-3E19766C9DB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommersService.Test", "EcommersService.Test\EcommersService.Test.csproj", "{32576F81-479D-4F9D-91D9-FB5677FFEC0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommorcService.Tests", "EcommorcService.Tests\EcommorcService.Tests.csproj", "{092B1513-AE02-4FF0-A7D7-B1FE1D63888C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{506C822A-837E-40EE-BF94-3E19766C9DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{506C822A-837E-40EE-BF94-3E19766C9DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{506C822A-837E-40EE-BF94-3E19766C9DB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32576F81-479D-4F9D-91D9-FB5677FFEC0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32576F81-479D-4F9D-91D9-FB5677FFEC0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32576F81-479D-4F9D-91D9-FB5677FFEC0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32576F81-479D-4F9D-91D9-FB5677FFEC0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{092B1513-AE02-4FF0-A7D7-B1FE1D63888C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{092B1513-AE02-4FF0-A7D7-B1FE1D63888C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{092B1513-AE02-4FF0-A7D7-B1FE1D63888C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{092B1513-AE02-4FF0-A7D7-B1FE1D63888C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

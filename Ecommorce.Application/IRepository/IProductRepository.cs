@@ -14,7 +14,7 @@ namespace Ecommorce.Application.IRepository
 
         //Task<IEnumerable<Product>> GetGridAsync(int id, ProductParameters productParameters);
         Task<PagedList<Product>> GetProductsAsync(int id, ProductParameters productParameters, bool trackChanges);
-
+        Task<PagedList<Product>> FilterProductsAsync(int id, FiltersParameters filtersParameters, bool trackChanges);
     }
 
     public interface IProductOptionRepository : IGenericRepository<ProductOption>

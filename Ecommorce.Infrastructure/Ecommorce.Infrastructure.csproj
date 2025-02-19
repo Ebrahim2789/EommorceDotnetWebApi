@@ -15,7 +15,12 @@
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.5.0" />
    
 	  <PackageReference Include="Nlog.Extensions.Logging" Version="5.4.0" />
+   
+	  <PackageReference Include="Serilog" Version="4.2.0" />
+   
+	  <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.5.0" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.0.2" />
   </ItemGroup>
 
   <ItemGroup>

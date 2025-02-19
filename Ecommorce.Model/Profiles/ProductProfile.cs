@@ -13,13 +13,14 @@ namespace Ecommorce.Model.Profiles
     public class ProductProfile : Profile
     {
 
-        public ProductProfile() {
+        public ProductProfile()
+        {
 
             CreateMap<ProductBrandDTO, ProductBrand>();
 
             //CreateMap<ProductBrand, ProductBrandDTO>();
             CreateMap<ProductBrandDTO, ProductBrand>().ReverseMap();
-        
+
 
             CreateMap<ProductCategoryDTO, Category>();
             CreateMap<Category, ProductCategoryDTO>();
@@ -37,17 +38,11 @@ namespace Ecommorce.Model.Profiles
             CreateMap<ProductOptionValueDTO, ProductOptionValue>();
             CreateMap<ProductOptionValue, ProductOptionValueDTO>();
 
-            //CreateMap<PublishProductDTO, ProductPublish>();
+            CreateMap<ProductDto, Product>();
+            CreateMap<ProductDto, Product>().ReverseMap();
+
+
             //CreateMap<ProductPublish, PublishProductDTO>();
-
-
-
-
-
-
-
-
-
 
 
 
