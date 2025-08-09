@@ -11,7 +11,8 @@ using Ecommorce.Model.OrderModels;
 
 namespace Ecommorce.Model
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string, IdentityUserClaim<string>, ApplicationUserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>
+    public class ApplicationDbContext :DbContext
+        //IdentityDbContext<ApplicationUser, IdentityRole, string, IdentityUserClaim<string>, ApplicationUserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>
     {
 
         //public class ApplicationDbContext: IdentityDbContext< ApplicationUser, ApplicationRole, string IdentityUserClaim<string>, ApplicationUserRole, IdentityUserLogin<string>   IdentityRoleClaim<string>, IdentityUserToken<string>>

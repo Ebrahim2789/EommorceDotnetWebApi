@@ -19,6 +19,7 @@ using Ecommorce.API.Extentions.ActionFilters;
 using AutoMapper;
 using Ecommorce.Model.DTO.Incoming;
 using Ecommorce.Application.Extensions;
+using ProductProfile = Ecommorce.Model.Profiles.ProductProfile;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,12 +1,6 @@
-﻿using Ecommorce.Model.Model;
-using Ecommorce.Model.OrderModels;
-using System;
-using System.Collections.Generic;
+﻿using Ecommorce.Model.OrderModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ecommorce.Model.ProductModels
 {
@@ -48,6 +42,8 @@ namespace Ecommorce.Model.ProductModels
         public virtual  Publisher? Publisher { get; set; }
 
  
+
+
         public virtual  ICollection<ProductCategory> ProductCategories { get; set; }
         public virtual  ICollection<ProductMedia>? ProductMedia { get; set; }
         public virtual  ICollection<ProductOption>? ProductOptions { get; set; }

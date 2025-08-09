@@ -87,14 +87,17 @@ namespace Ecommorce.API.Controllers
         public async Task<ActionResult<ApiResponse<IEnumerable<Product>>>> GetProductGrid([FromQuery] ProductParameters productParameters)
         {
 
-    
+
+
+            var products = await _repository.Product.GetProductsAsync(10, productParameters, false);
 
 
 
-
-            var products = await _repository.Product.GetGridAsync(productParameters, orderBy: q => q.OrderBy(p => p.Name), includes: p => p.ProductCategories,
-                    p=>p.ProductAttributes,
-                    p=>p.Brand);
+            //var products = await _repository.Product.GetGridAsync(productParameters,
+            //                                                      orderBy: q => q.OrderBy(p => p.Name),
+            //                                                      includes: p => p.ProductCategories,
+            //                                                      p => p.ProductAttributes,
+            //                                                      p => p.Brand);
             //  var response = new ApiResponse<IEnumerable<Product>>(products, true, $"{products.TotalCount} Products retrieved successfully");
 
 

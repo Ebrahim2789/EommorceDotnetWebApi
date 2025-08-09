@@ -38,8 +38,10 @@ namespace Ecommorce.Model.Profiles
             CreateMap<ProductOptionValueDTO, ProductOptionValue>();
             CreateMap<ProductOptionValue, ProductOptionValueDTO>();
 
-            CreateMap<ProductDto, Product>();
             CreateMap<ProductDto, Product>().ReverseMap();
+
+            //CreateMap<Product, ProductDTO>().ForMember(dest => dest.p, opt=>opt.MapFrom(src=>src.)
+
 
 
             //CreateMap<ProductPublish, PublishProductDTO>();
